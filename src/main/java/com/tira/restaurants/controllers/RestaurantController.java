@@ -25,6 +25,7 @@ import com.tira.restaurants.domain.Meal;
 import com.tira.restaurants.domain.Restaurant;
 import com.tira.restaurants.dto.CategoryDTO;
 import com.tira.restaurants.dto.ErrorMessage;
+import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.MealResponseDTO;
 import com.tira.restaurants.dto.RestaurantResponseDTO;
 import com.tira.restaurants.service.CategoryService;
@@ -52,9 +53,9 @@ public class RestaurantController {
     private ModelMapperService modelMapperService;
 	
 	@RequestMapping(value = "/getRestaurantsByFilter", method = RequestMethod.POST, produces="application/json")
-    public ResponseEntity getRestaurantsByFilter(@RequestBody Map<String, Object> filter)  {
-		PageRequest pageReq = new PageRequest((int)filter.get("pageNumber") - 1, (int)filter.get("itemsPerPage"));
-		String searchText = (String) filter.get("searchText");
+    public ResponseEntity getRestaurantsByFilter(@RequestBody FilterDTO filter)  {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
 		Page<Restaurant> restaurantPages = restaurantService.getByFilter(searchText,pageReq);
 		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
 		

@@ -20,9 +20,11 @@ import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Restaurant;
 import com.tira.restaurants.dto.CategoryDTO;
 import com.tira.restaurants.dto.ErrorMessage;
+import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.LocationFilterResponseDTO;
 import com.tira.restaurants.dto.LocationResponseDTO;
 import com.tira.restaurants.dto.RestaurantResponseDTO;
+import com.tira.restaurants.service.CategoryService;
 import com.tira.restaurants.service.LocationService;
 import com.tira.restaurants.service.ModelMapperService;
 import com.tira.restaurants.service.RestaurantService;
@@ -30,6 +32,7 @@ import com.tira.restaurants.service.UserService;
 
 @Controller
 @RequestMapping(value="/admin")
+@SuppressWarnings("rawtypes")
 public class AdminController {
 	
 	@Autowired 
@@ -42,13 +45,17 @@ public class AdminController {
 	UserService userService;	
 	
 	@Autowired
+	CategoryService categoryService;
+	
+	@Autowired
 	ModelMapperService modelMapperService;
 	
 	
+	
 	@RequestMapping(value = "/getFilteredLocations", method = RequestMethod.POST, produces="application/json")
-    public ResponseEntity getFilteredLocations(@RequestBody Map<String, Object> filter)  {
-		PageRequest pageReq = new PageRequest((int)filter.get("pageNumber") - 1, (int)filter.get("itemsPerPage"));
-		String searchText = (String) filter.get("searchText");
+    public ResponseEntity getFilteredLocations(@RequestBody FilterDTO filter)  {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
 		Page<Location> locationPages = locationService.getByFilter(searchText,pageReq);
 		List<LocationFilterResponseDTO> locationsDTO = new ArrayList<>();
 		
@@ -105,4 +112,58 @@ public class AdminController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToLocationFilterResponseDto(location));
     }
+	
+	
+	@RequestMapping(value = "/getFilteredCategories", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity getFilteredCategories(@RequestBody FilterDTO filter)  {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
+		Page<Category> categoryPages = categoryService.getByFilter(searchText,pageReq);
+		List<CategoryDTO> categoriesDTO = new ArrayList<>();
+		
+		for(Category category : categoryPages.getContent()) {
+			categoriesDTO.add(modelMapperService.convertToCategoryDto(category));
+		}
+		
+		Map<String, Object> responseBody = new HashMap<>();
+		responseBody.put("categories", categoriesDTO);
+		responseBody.put("numberOfPages", categoryPages.getTotalPages());
+    	return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+	
+    }
+	
+	@RequestMapping(value = "/addCategory", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity addCategory(@RequestBody Map<String, Object> requestBody)  {
+		Category category = new Category((String) requestBody.get("name"));
+		categoryService.addCategory(category);
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToCategoryDto(category));
+	
+    }
+	
+	@RequestMapping(value = "/editCategory", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity editCategory(@RequestBody CategoryDTO editedCategory)  {
+		Category category = categoryService.editCategory(editedCategory.getId(),editedCategory.getName());
+		if(category == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("Category doesn't exist!"));
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToCategoryDto(category));
+		}
+    }
+	
+	@RequestMapping(value = "/deleteCategory", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity deleteCategory(@RequestBody Map<String, Object> requestBody)  {
+		categoryService.deleteCategory(new Long((Integer) requestBody.get("id")));
+		return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+	
+	@RequestMapping(value = "/getCategoryDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getCategoryDetails(@RequestBody Map<String, Object> requestBody)  {
+		Category category = categoryService.getCategory(new Long((Integer) requestBody.get("id")));
+		if(category == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToCategoryDto(category));
+    }
+	
 }
