@@ -3,6 +3,7 @@ package com.tira.restaurants.handler;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,4 +28,13 @@ public class ExceptionHandlerAdvice {
 				.status(HttpStatus.BAD_REQUEST)
 				.body(new ErrorMessage("Entered data is not valid"));
 	}
+	
+	@ExceptionHandler(EmptyResultDataAccessException.class)
+	public ResponseEntity handleException(EmptyResultDataAccessException e) {
+		logger.fatal("Required Entity with given id does not exist: " + e);
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body("");
+	}
+	
 }

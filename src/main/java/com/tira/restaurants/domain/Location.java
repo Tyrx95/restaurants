@@ -20,7 +20,7 @@ public class Location {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name")
+	@Column(name = "name", unique=true)
 	private String name;
 
 	@Column(name = "number")
@@ -37,6 +37,8 @@ public class Location {
 		this.name = name;
 		this.number = number;
 	}
+	
+	
 
 	public Long getId() {
 		return id;

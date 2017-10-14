@@ -19,6 +19,7 @@ import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Restaurant;
 import com.tira.restaurants.dto.CategoryDTO;
+import com.tira.restaurants.dto.ErrorMessage;
 import com.tira.restaurants.dto.LocationFilterResponseDTO;
 import com.tira.restaurants.dto.LocationResponseDTO;
 import com.tira.restaurants.dto.RestaurantResponseDTO;
@@ -72,4 +73,36 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 	
+	@RequestMapping(value = "/addLocation", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity addLocation(@RequestBody Map<String, Object> requestBody)  {
+		Location location = new Location((String) requestBody.get("name"),0);
+		locationService.addLocation(location);
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToLocationFilterResponseDto(location));
+    }
+	
+	@RequestMapping(value = "/editLocation", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity editLocation(@RequestBody LocationFilterResponseDTO newLocation)  {
+		Location location = locationService.editLocation(newLocation.getId(),newLocation.getName());
+		if(location == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("Location doesn't exist!"));
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToLocationFilterResponseDto(location));
+		}
+    }
+	
+	@RequestMapping(value = "/deleteLocation", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity deleteLocation(@RequestBody Map<String, Object> requestBody)  {
+		locationService.deleteLocation(new Long((Integer) requestBody.get("id")));
+		return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+	
+	@RequestMapping(value = "/getLocationDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getLocationDetails(@RequestBody Map<String, Object> requestBody)  {
+		Location location = locationService.getLocation(new Long((Integer) requestBody.get("id")));
+		if(location == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToLocationFilterResponseDto(location));
+    }
 }

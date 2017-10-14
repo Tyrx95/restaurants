@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.repository.LocationRepository;
 
+import javassist.NotFoundException;
+
 @Service
 public class LocationServiceImpl implements LocationService {
 
@@ -35,6 +37,33 @@ public class LocationServiceImpl implements LocationService {
 			return locationRepository.getLocationsByFilter(searchText,pageable);
 		}
 		else return locationRepository.findAll(pageable);
+	}
+
+	@Override
+	public void addLocation(Location location) {
+		locationRepository.save(location);
+	}
+
+	@Override
+	public Location editLocation(Long id, String name) {
+		Location location = locationRepository.findOne(id);
+		if(location == null) {
+			return null;
+		}
+		location.setName(name);
+		addLocation(location);
+		return location;
+	}
+
+	@Override
+	public void deleteLocation(Long id) {
+		locationRepository.delete(id);
+		
+	}
+
+	@Override
+	public Location getLocation(Long id) {
+		return locationRepository.findOne(id);
 	}
 	
 	
