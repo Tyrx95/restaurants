@@ -1,6 +1,7 @@
 package com.tira.restaurants.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class CommentServiceImpl implements CommentService {
 		Comment newComment = new Comment(mark, LocalDateTime.now() ,userRepository.findOne(new Long(idUser)), 
 				restaurantRepository.findOne(new Long(idRestaurant)),comment);
 		commentRepository.save(newComment);
+	}
+
+	@Override
+	public List<Comment> getAllRestaurantComments(Long restaurantId) {
+		return commentRepository.findAllCommentsByRestaurantId(restaurantId);
 	}
 	
 	

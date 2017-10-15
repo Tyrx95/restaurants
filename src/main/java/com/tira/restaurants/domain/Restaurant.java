@@ -84,19 +84,17 @@ public class Restaurant {
 		)
 	private Set<Category> categories = new HashSet<>();
 	
-	protected Restaurant() {
+	public Restaurant() {
 	}
 
-	public Restaurant(String restaurantName, String description, Double latitude, Double longitude, Integer mark,
-			Integer votes, Integer priceRange, String imageFileName, String coverFileName, Location location,
+	public Restaurant(String restaurantName, String description, Double latitude, Double longitude, 
+			Integer priceRange, String imageFileName, String coverFileName, Location location,
 			 Set<Category> categories) {
 		super();
 		this.restaurantName = restaurantName;
 		this.description = description;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.mark = mark;
-		this.votes = votes;
 		this.priceRange = priceRange;
 		this.imageFileName = imageFileName;
 		this.coverFileName = coverFileName;
@@ -294,11 +292,25 @@ public class Restaurant {
 		reservation.setRestaurant(null);
 	}
 
-	private void updateFoodType() {
+	private void updateFoodType() { 
+		System.out.println("Updating food categories: "+ categories);
 		foodType="";
-		for(Category category : categories) {
-			foodType.concat(" | "+category.getName());
+		if(categories == null || categories.isEmpty() ) {
+			foodType+="-";
 		}
+		else {
+			System.out.println("Adding categories to foodType");
+			
+			for(Category category : categories) {
+				if(foodType.equals("")) {
+					foodType+= category.getName();
+				}
+				else {
+					foodType+= " | "+category.getName();
+				}
+			}
+		}
+		System.out.println("FoodType is: "+foodType);
 	}
 	
 	@Override
@@ -306,7 +318,7 @@ public class Restaurant {
 		return "Restaurant [id=" + id + ", restaurantName=" + restaurantName + ", description=" + description
 				+ ", latitude=" + latitude + ", longitude=" + longitude + ", mark=" + mark + ", votes=" + votes
 				+ ", priceRange=" + priceRange + ", imageFileName=" + imageFileName + ", coverFileName=" + coverFileName
-				+ ", foodType=" + foodType + ", location=" + location + "]";
+				+ ", foodType=" + foodType + "]";
 	}
 
 }

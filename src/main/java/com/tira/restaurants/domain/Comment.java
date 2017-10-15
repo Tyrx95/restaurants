@@ -42,7 +42,7 @@ public class Comment {
 	private Restaurant restaurant;
 
 
-	protected Comment() {
+	public Comment() {
 	}
 
 	public Comment(Integer mark, LocalDateTime insertTime, User user, Restaurant restaurant, String comment) {

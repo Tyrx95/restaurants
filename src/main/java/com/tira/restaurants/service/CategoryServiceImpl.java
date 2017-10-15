@@ -1,6 +1,7 @@
 package com.tira.restaurants.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.repository.CategoryRepository;
@@ -58,6 +60,11 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category getCategory(Long id) {
 		return categoryRepository.findOne(id);
+	}
+
+	@Override
+	public Set<Category> getCategories(Set<Long> categories) {
+		return Sets.newHashSet(categoryRepository.findAll(categories));
 	}
 
 }

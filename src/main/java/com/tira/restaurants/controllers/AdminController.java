@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,15 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tira.restaurants.domain.Category;
+import com.tira.restaurants.domain.Comment;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Restaurant;
 import com.tira.restaurants.dto.CategoryDTO;
+import com.tira.restaurants.dto.CommentDTO;
 import com.tira.restaurants.dto.ErrorMessage;
 import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.LocationFilterResponseDTO;
 import com.tira.restaurants.dto.LocationResponseDTO;
+import com.tira.restaurants.dto.RestaurantEditDTO;
+import com.tira.restaurants.dto.RestaurantRequestDTO;
 import com.tira.restaurants.dto.RestaurantResponseDTO;
 import com.tira.restaurants.service.CategoryService;
+import com.tira.restaurants.service.CommentService;
 import com.tira.restaurants.service.LocationService;
 import com.tira.restaurants.service.ModelMapperService;
 import com.tira.restaurants.service.RestaurantService;
@@ -46,6 +52,9 @@ public class AdminController {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	CommentService commentService;
 	
 	@Autowired
 	ModelMapperService modelMapperService;
@@ -165,5 +174,75 @@ public class AdminController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToCategoryDto(category));
     }
+	
+	@RequestMapping(value = "/getFilteredRestaurants", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity getFilteredRestaurants(@RequestBody FilterDTO filter)  {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
+		Page<Restaurant> restaurantPages = restaurantService.getByFilter(searchText,pageReq);
+		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
+		
+		for(Restaurant restaurant : restaurantPages.getContent()) {
+			restaurantsDTO.add(modelMapperService.convertToRestaurantDto(restaurant));
+		}
+		
+		Map<String, Object> responseBody = new HashMap<>();
+		responseBody.put("restaurants", restaurantsDTO);
+		responseBody.put("numberOfRestaurantPages", restaurantPages.getTotalPages());
+    	return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+	
+	@RequestMapping(value = "/addRestaurant", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity addRestaurant(@RequestBody RestaurantRequestDTO restaurantDTO)  {
+		Restaurant restaurant = modelMapperService.convertToRestaurantEntity(restaurantDTO);
+		restaurantService.addRestaurant(restaurant);
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToRestaurantDto(restaurant));
+    }
+	
+	@RequestMapping(value = "/editRestaurant", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity editRestaurant(@RequestBody RestaurantEditDTO restaurantDTO)  {
+		if(restaurantService.editRestaurant(restaurantDTO)) {
+			return ResponseEntity.status(HttpStatus.OK).body(restaurantDTO);
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+		}
+    }
+	
+	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity deleteRestaurant(@RequestBody Map<String, Object> requestBody)  {
+		restaurantService.deleteRestaurant(new Long((Integer) requestBody.get("id")));
+		return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+	
+	@RequestMapping(value = "/getAllRestaurantComments", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getAllRestaurantComments(@RequestBody Map<String, Object> requestBody)  {
+		List<Comment> comments= commentService.getAllRestaurantComments(new Long((Integer) requestBody.get("idRestaurant")));
+		List<CommentDTO> commentsDTO = new ArrayList<>();
+		
+		for(Comment comment: comments) {
+			commentsDTO.add(modelMapperService.convertToCommentDTO(comment));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(commentsDTO);
+    }
+	
+
+	@RequestMapping(value = "/getRestaurantCategories", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getRestaurantCategories(@RequestBody Map<String, Object> requestBody)  {
+		Set<Category> categories= restaurantService.getRestaurantCategories(new Long((Integer) requestBody.get("id")));
+		if(categories==null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+		}
+		List<CategoryDTO> categoriesDTO = new ArrayList<>();
+		
+		for(Category category: categories) {
+			categoriesDTO.add(modelMapperService.convertToCategoryDto(category));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(categoriesDTO);
+    }
+	
+	
 	
 }

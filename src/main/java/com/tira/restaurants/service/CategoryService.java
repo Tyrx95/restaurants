@@ -1,6 +1,7 @@
 package com.tira.restaurants.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,4 +21,6 @@ public interface CategoryService {
 	void deleteCategory(Long id);
 
 	Category getCategory(Long id);
+
+	Set<Category> getCategories(Set<Long> categories);
 }
