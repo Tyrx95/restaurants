@@ -23,6 +23,7 @@ import com.tira.restaurants.repository.ReservationRepository;
 import com.tira.restaurants.repository.RestaurantRepository;
 import com.tira.restaurants.repository.TableRepository;
 import com.tira.restaurants.repository.UserRepository;
+import com.tira.restaurants.service.RestaurantService;
 import com.tira.restaurants.service.UserService;
 
 @RestController
@@ -31,25 +32,15 @@ public class TestController {
 	@Autowired
 	private UserService userService;
 	
-//	@Autowired
-//	private MealRepository mealRepository;
-//	
-//	@Autowired
-//	private UserRepository userRepository;
-//	
-//	@Autowired
-//	private CommentRepository commentRepository;
-//	
-//	@Autowired
-//	private TableRepository tableRepository;
-//	
-//	@Autowired
-//	private ReservationRepository reservationRepository;
-//	
-//	@Autowired
-//	private LocationRepository locationRepository;
-//	
-//	
+	@Autowired
+	private RestaurantService restaurantService;
+	
+	@Autowired
+	private TableRepository tableRepository;
+	
+	
+
+
 //	@RequestMapping("/save")
 //	public String process() {
 //		
@@ -84,7 +75,17 @@ public class TestController {
 //	}
 //	
 	
-	
+	@RequestMapping("/addTable")
+	public String addTable() {
+		Restaurant restaurant = restaurantService.getOne(32L);
+		Table table4 = new Table(restaurant, 4);
+		Table table5 = new Table(restaurant, 5);
+		Table table2 = new Table(restaurant, 2);
+		tableRepository.save(table4);
+		tableRepository.save(table5);
+		tableRepository.save(table2);
+		return "Success";
+	}
 	
 	
 }

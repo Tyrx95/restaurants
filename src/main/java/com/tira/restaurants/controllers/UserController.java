@@ -47,7 +47,7 @@ public class UserController {
     public ResponseEntity login(@RequestBody UserLoginDTO userDTO) throws UsernameNotFoundException {
     	securityService.login(userDTO.getEmail(), userDTO.getPassword());
     	User user = userService.findByEmail(userDTO.getEmail());
-    	return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToDto(user));
+    	return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces="application/json")
@@ -57,16 +57,16 @@ public class UserController {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
     	}
     	
-    	User user = modelMapperService.convertToEntity(userDTO);
+    	User user = modelMapperService.convertToUserEntity(userDTO);
     	userService.save(user);
-    	return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToDto(user));
+    	return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
     }
     
     @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity getCurrentUser(){
     	User user = userService.getCurrentUser();
     	if(user != null) {
-    		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToDto(user));
+    		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
     	}
     	
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("User does not exist."));

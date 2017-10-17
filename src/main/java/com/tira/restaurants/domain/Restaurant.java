@@ -28,7 +28,7 @@ public class Restaurant {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "restaurantName")
+	@Column(name = "restaurantName", unique=true)
 	private String restaurantName;
 
 	@Column(name = "description")

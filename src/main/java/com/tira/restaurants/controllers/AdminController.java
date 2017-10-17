@@ -2,6 +2,7 @@ package com.tira.restaurants.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,20 +21,29 @@ import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Comment;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Restaurant;
+import com.tira.restaurants.domain.Table;
+import com.tira.restaurants.domain.User;
 import com.tira.restaurants.dto.CategoryDTO;
 import com.tira.restaurants.dto.CommentDTO;
 import com.tira.restaurants.dto.ErrorMessage;
 import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.LocationFilterResponseDTO;
 import com.tira.restaurants.dto.LocationResponseDTO;
+import com.tira.restaurants.dto.MealResponseDTO;
 import com.tira.restaurants.dto.RestaurantEditDTO;
 import com.tira.restaurants.dto.RestaurantRequestDTO;
 import com.tira.restaurants.dto.RestaurantResponseDTO;
+import com.tira.restaurants.dto.TableDTO;
+import com.tira.restaurants.dto.UserEditDTO;
+import com.tira.restaurants.dto.UserRegisterDTO;
+import com.tira.restaurants.dto.UserResponseDTO;
 import com.tira.restaurants.service.CategoryService;
 import com.tira.restaurants.service.CommentService;
 import com.tira.restaurants.service.LocationService;
+import com.tira.restaurants.service.MealService;
 import com.tira.restaurants.service.ModelMapperService;
 import com.tira.restaurants.service.RestaurantService;
+import com.tira.restaurants.service.TableService;
 import com.tira.restaurants.service.UserService;
 
 @Controller
@@ -57,7 +67,13 @@ public class AdminController {
 	CommentService commentService;
 	
 	@Autowired
+	TableService tableService;
+	
+	@Autowired
 	ModelMapperService modelMapperService;
+	
+	@Autowired
+	MealService mealService;
 	
 	
 	
@@ -242,6 +258,134 @@ public class AdminController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(categoriesDTO);
     }
+	
+	@RequestMapping(value = "/getFilteredUsers", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getFilteredUsers(@RequestBody FilterDTO filter)  {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
+		Page<User> userPages = userService.getByFilter(searchText,pageReq);
+		List<UserResponseDTO> usersDTO = new ArrayList<>();
+		
+		for(User user : userPages.getContent()) {
+			usersDTO.add(modelMapperService.convertToUserDto(user));
+		}
+		
+		Map<String, Object> responseBody = new HashMap<>();
+		responseBody.put("users", usersDTO);
+		responseBody.put("numberOfPages", userPages.getTotalPages());
+    	return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+	
+	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity addUser(@RequestBody UserRegisterDTO userDTO)  {
+		User user = modelMapperService.convertToUserEntity(userDTO);
+		userService.save(user);
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
+    }
+	
+	@RequestMapping(value = "/editUser", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity editUser(@RequestBody UserEditDTO userDTO)  {
+		User editedUser = userService.editUser(userDTO);
+		if(editedUser== null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("User does not exist!"));
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(editedUser));
+    }
+	
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity deleteUser(@RequestBody Map<String, Object> requestBody)  {
+		userService.deleteUser(new Long((Integer) requestBody.get("id")));
+		return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+	
+	@RequestMapping(value = "/getUserDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getUserDetails(@RequestBody Map<String, Object> requestBody)  {
+		User user = userService.getUser(new Long((Integer) requestBody.get("id")));
+		if(user == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
+    }
+	
+	@RequestMapping(value = "/getAllRestaurantTables", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity getAllRestaurantTables(@RequestBody Map<String, Object> requestBody)  {
+		List<Table> tables= tableService.getAllRestaurantTables(new Long((Integer) requestBody.get("idRestaurant")));
+		List<TableDTO> tablesDTO = new ArrayList<>();
+		
+		for(Table table: tables) {
+			tablesDTO.add(modelMapperService.convertToTableDTO(table));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(tablesDTO);
+    }
+	
+	@RequestMapping(value = "/adminTableItems", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity adminTableItems(@RequestBody Map<String, Object> requestBody)  {
+		List<LinkedHashMap> addTablesLHM= (List<LinkedHashMap>) requestBody.get("addQueue");
+		List<LinkedHashMap> editTablesLHM= (List<LinkedHashMap>) requestBody.get("editQueue");
+		List<LinkedHashMap> deleteTablesLHM= (List<LinkedHashMap>) requestBody.get("deleteQueue");
+		
+		if(addTablesLHM!=null && !addTablesLHM.isEmpty()) {
+			
+			tableService.addTables(convertToTablesDTO(addTablesLHM));
+		}
+		if(editTablesLHM!=null && !editTablesLHM.isEmpty()) {
+			tableService.editTables(convertToTablesDTO(editTablesLHM));
+		}
+		if(deleteTablesLHM!=null && !deleteTablesLHM.isEmpty()) {
+			
+			tableService.deleteTables(convertToTablesDTO(deleteTablesLHM));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body("");
+	}
+	
+	@RequestMapping(value = "/adminMenuItems", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+    public ResponseEntity adminMenuItems(@RequestBody Map<String, Object> requestBody)  {
+		List<LinkedHashMap> addMealsLHM= (List<LinkedHashMap>) requestBody.get("addQueue");
+		List<LinkedHashMap> editMealsLHM= (List<LinkedHashMap>) requestBody.get("editQueue");
+		List<LinkedHashMap> deleteMealsLHM= (List<LinkedHashMap>) requestBody.get("deleteQueue");
+		
+		if(addMealsLHM!=null && !addMealsLHM.isEmpty()) {
+			mealService.addMeals(convertToMealsDTO(addMealsLHM));
+		}
+		if(editMealsLHM!=null && !editMealsLHM.isEmpty()) {
+			mealService.editMeals(convertToMealsDTO(editMealsLHM));
+		}
+		if(deleteMealsLHM!=null && !deleteMealsLHM.isEmpty()) {
+			
+			mealService.deleteMeals(convertToMealsDTO(deleteMealsLHM));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body("");
+	}
+	
+
+	
+	private List<MealResponseDTO> convertToMealsDTO(List<LinkedHashMap> mealsLHM) {
+		List<MealResponseDTO> mealsDTO = new ArrayList<>();
+		System.out.println(mealsLHM);
+		for(LinkedHashMap lhm: mealsLHM) {
+			MealResponseDTO mealDTO = modelMapperService.convertFromHashMapToMealsDTO(lhm);
+			mealsDTO.add(mealDTO);
+			System.out.println("In mealsDTO LIST: "+mealsDTO);
+		}
+		
+		return mealsDTO;
+	}
+
+	private List<TableDTO> convertToTablesDTO(List<LinkedHashMap> tablesLHM) {
+		List<TableDTO> tablesDTO = new ArrayList<>();
+		for(LinkedHashMap lhm: tablesLHM) {
+			TableDTO tableDTO = modelMapperService.convertFromHashMapToTablesDTO(lhm);
+			tablesDTO.add(tableDTO);
+		}
+		
+		return tablesDTO;
+	}
+	
+	
+	
 	
 	
 	

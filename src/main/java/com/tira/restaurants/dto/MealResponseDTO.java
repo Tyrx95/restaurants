@@ -47,8 +47,10 @@ public class MealResponseDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
+	@Override
+	public String toString() {
+		return "MealResponseDTO [id=" + id + ", restaurant=" + restaurant + ", type=" + type + ", name=" + name
+				+ ", price=" + price + ", description=" + description + "]";
+	}
 	
 }

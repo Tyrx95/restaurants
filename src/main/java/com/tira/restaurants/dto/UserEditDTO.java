@@ -1,43 +1,23 @@
 package com.tira.restaurants.dto;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.tira.restaurants.validator.ValidEmail;
-
-public class UserRegisterDTO {
+public class UserEditDTO {
 	
-	@NotNull
-	@NotEmpty
-	@ValidEmail
+	private Long id;
 	private String email;
-	
-	@NotNull
-	@NotEmpty
 	private String phone;
-	
-	@NotNull
-	@NotEmpty
 	private String country;
-	
-	@NotNull
-	@NotEmpty
 	private String city;
-	
-	@NotNull
-	@NotEmpty
 	private String firstName;
-	
-	@NotNull
-	@NotEmpty
 	private String lastName;
-	
-	@NotNull
-	@NotEmpty
 	private String password;
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getEmail() {
 		return email;
 	}
