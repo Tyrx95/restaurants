@@ -95,10 +95,4 @@ public class Meal {
 		this.description = description;
 	}
 
-	@Override
-	public String toString() {
-		return "Meal [id=" + id + ", restaurant=" + restaurant + ", type=" + type + ", name=" + name + ", price="
-				+ price + ", description=" + description + "]";
-	}
-
 }

@@ -57,9 +57,4 @@ public class Category {
 		this.restaurants = restaurants;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
-	}
-	
 }

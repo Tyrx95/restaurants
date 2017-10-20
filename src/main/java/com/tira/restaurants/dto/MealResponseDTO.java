@@ -1,7 +1,5 @@
 package com.tira.restaurants.dto;
 
-import com.tira.restaurants.domain.Restaurant;
-
 public class MealResponseDTO {
 	
 	private Long id;
@@ -47,10 +45,5 @@ public class MealResponseDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	@Override
-	public String toString() {
-		return "MealResponseDTO [id=" + id + ", restaurant=" + restaurant + ", type=" + type + ", name=" + name
-				+ ", price=" + price + ", description=" + description + "]";
-	}
-	
+
 }

@@ -1,9 +1,5 @@
 package com.tira.restaurants.dto;
 
-import javax.persistence.Column;
-
-import com.tira.restaurants.domain.Location;
-
 public class RestaurantResponseDTO {
 	
 	private Long id;

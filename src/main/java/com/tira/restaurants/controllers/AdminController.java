@@ -28,7 +28,6 @@ import com.tira.restaurants.dto.CommentDTO;
 import com.tira.restaurants.dto.ErrorMessage;
 import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.LocationFilterResponseDTO;
-import com.tira.restaurants.dto.LocationResponseDTO;
 import com.tira.restaurants.dto.MealResponseDTO;
 import com.tira.restaurants.dto.RestaurantEditDTO;
 import com.tira.restaurants.dto.RestaurantRequestDTO;
@@ -74,7 +73,6 @@ public class AdminController {
 	
 	@Autowired
 	MealService mealService;
-	
 	
 	
 	@RequestMapping(value = "/getFilteredLocations", method = RequestMethod.POST, produces="application/json")
@@ -125,19 +123,18 @@ public class AdminController {
 	
 	@RequestMapping(value = "/deleteLocation", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteLocation(@RequestBody Map<String, Object> requestBody)  {
-		locationService.deleteLocation(new Long((Integer) requestBody.get("id")));
+		locationService.deleteLocation(convertToLong(requestBody.get("id")));
 		return ResponseEntity.status(HttpStatus.OK).body("");
     }
 	
 	@RequestMapping(value = "/getLocationDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getLocationDetails(@RequestBody Map<String, Object> requestBody)  {
-		Location location = locationService.getLocation(new Long((Integer) requestBody.get("id")));
+		Location location = locationService.getLocation(convertToLong(requestBody.get("id")));		
 		if(location == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToLocationFilterResponseDto(location));
     }
-	
 	
 	@RequestMapping(value = "/getFilteredCategories", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity getFilteredCategories(@RequestBody FilterDTO filter)  {
@@ -178,13 +175,13 @@ public class AdminController {
 	
 	@RequestMapping(value = "/deleteCategory", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteCategory(@RequestBody Map<String, Object> requestBody)  {
-		categoryService.deleteCategory(new Long((Integer) requestBody.get("id")));
+		categoryService.deleteCategory(convertToLong(requestBody.get("id")));
 		return ResponseEntity.status(HttpStatus.OK).body("");
     }
 	
 	@RequestMapping(value = "/getCategoryDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getCategoryDetails(@RequestBody Map<String, Object> requestBody)  {
-		Category category = categoryService.getCategory(new Long((Integer) requestBody.get("id")));
+		Category category = categoryService.getCategory(convertToLong(requestBody.get("id")));
 		if(category == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
 		}
@@ -227,13 +224,13 @@ public class AdminController {
 	
 	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteRestaurant(@RequestBody Map<String, Object> requestBody)  {
-		restaurantService.deleteRestaurant(new Long((Integer) requestBody.get("id")));
+		restaurantService.deleteRestaurant(convertToLong(requestBody.get("id")));
 		return ResponseEntity.status(HttpStatus.OK).body("");
     }
 	
 	@RequestMapping(value = "/getAllRestaurantComments", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getAllRestaurantComments(@RequestBody Map<String, Object> requestBody)  {
-		List<Comment> comments= commentService.getAllRestaurantComments(new Long((Integer) requestBody.get("idRestaurant")));
+		List<Comment> comments= commentService.getAllRestaurantComments(convertToLong(requestBody.get("idRestaurant")));
 		List<CommentDTO> commentsDTO = new ArrayList<>();
 		
 		for(Comment comment: comments) {
@@ -246,7 +243,7 @@ public class AdminController {
 
 	@RequestMapping(value = "/getRestaurantCategories", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getRestaurantCategories(@RequestBody Map<String, Object> requestBody)  {
-		Set<Category> categories= restaurantService.getRestaurantCategories(new Long((Integer) requestBody.get("id")));
+		Set<Category> categories= restaurantService.getRestaurantCategories((convertToLong(requestBody.get("id"))));
 		if(categories==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
 		}
@@ -294,13 +291,13 @@ public class AdminController {
 	
 	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteUser(@RequestBody Map<String, Object> requestBody)  {
-		userService.deleteUser(new Long((Integer) requestBody.get("id")));
+		userService.deleteUser((convertToLong(requestBody.get("idRestaurant"))));
 		return ResponseEntity.status(HttpStatus.OK).body("");
     }
 	
 	@RequestMapping(value = "/getUserDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getUserDetails(@RequestBody Map<String, Object> requestBody)  {
-		User user = userService.getUser(new Long((Integer) requestBody.get("id")));
+		User user = userService.getUser((convertToLong(requestBody.get("idRestaurant"))));
 		if(user == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
 		}
@@ -309,7 +306,7 @@ public class AdminController {
 	
 	@RequestMapping(value = "/getAllRestaurantTables", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getAllRestaurantTables(@RequestBody Map<String, Object> requestBody)  {
-		List<Table> tables= tableService.getAllRestaurantTables(new Long((Integer) requestBody.get("idRestaurant")));
+		List<Table> tables= tableService.getAllRestaurantTables((convertToLong(requestBody.get("idRestaurant"))));
 		List<TableDTO> tablesDTO = new ArrayList<>();
 		
 		for(Table table: tables) {
@@ -364,11 +361,9 @@ public class AdminController {
 	
 	private List<MealResponseDTO> convertToMealsDTO(List<LinkedHashMap> mealsLHM) {
 		List<MealResponseDTO> mealsDTO = new ArrayList<>();
-		System.out.println(mealsLHM);
 		for(LinkedHashMap lhm: mealsLHM) {
 			MealResponseDTO mealDTO = modelMapperService.convertFromHashMapToMealsDTO(lhm);
 			mealsDTO.add(mealDTO);
-			System.out.println("In mealsDTO LIST: "+mealsDTO);
 		}
 		
 		return mealsDTO;
@@ -384,9 +379,15 @@ public class AdminController {
 		return tablesDTO;
 	}
 	
-	
-	
-	
-	
+	private Long convertToLong(Object object) {
+		Long id;
+		try{
+			id = new Long((Integer) object);
+		}
+		catch(ClassCastException e) {
+			id= new Long(Integer.parseInt((String) object));
+		}
+		return id;
+	}
 	
 }

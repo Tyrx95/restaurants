@@ -1,7 +1,6 @@
 package com.tira.restaurants.domain;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -30,7 +29,7 @@ public class Reservation {
 	@Column(name="persons")
 	private Integer persons;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idTable")
     private com.tira.restaurants.domain.Table table;
 	
@@ -94,8 +93,6 @@ public class Reservation {
 		this.user = user;
 	}
 
-	
-
 	public LocalDate getReservationDate() {
 		return reservationDate;
 	}
@@ -120,6 +117,4 @@ public class Reservation {
 		this.restaurant = restaurant;
 	}
 
-	
-	
 }

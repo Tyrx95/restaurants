@@ -34,7 +34,7 @@ public class SecurityServiceImpl implements SecurityService{
 	    	}
 	    	
 	    }
-	    
+	  
 	    @Override
 	    public void login(String email, String password) {
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(email);

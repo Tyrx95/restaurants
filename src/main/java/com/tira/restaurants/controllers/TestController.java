@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tira.restaurants.domain.Category;
@@ -74,18 +76,6 @@ public class TestController {
 //		return "Success";
 //	}
 //	
-	
-	@RequestMapping("/addTable")
-	public String addTable() {
-		Restaurant restaurant = restaurantService.getOne(32L);
-		Table table4 = new Table(restaurant, 4);
-		Table table5 = new Table(restaurant, 5);
-		Table table2 = new Table(restaurant, 2);
-		tableRepository.save(table4);
-		tableRepository.save(table5);
-		tableRepository.save(table2);
-		return "Success";
-	}
-	
+
 	
 }

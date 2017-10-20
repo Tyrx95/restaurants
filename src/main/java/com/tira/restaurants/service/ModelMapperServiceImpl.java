@@ -16,6 +16,7 @@ import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Comment;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Meal;
+import com.tira.restaurants.domain.Reservation;
 import com.tira.restaurants.domain.Restaurant;
 import com.tira.restaurants.domain.Table;
 import com.tira.restaurants.domain.User;
@@ -27,6 +28,7 @@ import com.tira.restaurants.dto.MealResponseDTO;
 import com.tira.restaurants.dto.RestaurantEditDTO;
 import com.tira.restaurants.dto.RestaurantRequestDTO;
 import com.tira.restaurants.dto.RestaurantResponseDTO;
+import com.tira.restaurants.dto.SuccessfulReservationDTO;
 import com.tira.restaurants.dto.TableDTO;
 import com.tira.restaurants.dto.UserEditDTO;
 import com.tira.restaurants.dto.UserRegisterDTO;
@@ -236,8 +238,31 @@ public class ModelMapperServiceImpl implements ModelMapperService {
 			modelMapper.createTypeMap(LinkedHashMap.class, MealResponseDTO.class).setConverter(converter);
 		}
 		MealResponseDTO mealDTO = modelMapper.map(lhm, MealResponseDTO.class);
-		System.out.println("Returning mealDTO from mapper: \n"+ mealDTO);
 		return mealDTO;
+	}
+
+	@Override
+	public SuccessfulReservationDTO convertToResponseSuccessfulReservationDTO(Reservation reservation) {
+		Converter<Reservation, SuccessfulReservationDTO> converter = new AbstractConverter<Reservation, SuccessfulReservationDTO>() {
+			@Override
+			protected SuccessfulReservationDTO convert(Reservation source) {
+				SuccessfulReservationDTO reservationDTO = new SuccessfulReservationDTO();
+				reservationDTO.setId(source.getId());
+				reservationDTO.setIdTable(source.getTable().getId());
+				reservationDTO.setIdUser(source.getUser().getId());
+				reservationDTO.setPersons(source.getPersons());
+				reservationDTO.setReservationDateTime(LocalDateTime.of(source.getReservationDate(), source.getReservationTime()));
+				return reservationDTO;
+			}
+		};
+
+		TypeMap<Reservation, SuccessfulReservationDTO> typeMap = modelMapper.getTypeMap(Reservation.class,
+				SuccessfulReservationDTO.class);
+		if (typeMap == null) {
+			modelMapper.createTypeMap(Reservation.class, SuccessfulReservationDTO.class).setConverter(converter);
+		}
+		SuccessfulReservationDTO reservationDTO = modelMapper.map(reservation, SuccessfulReservationDTO.class);
+		return reservationDTO;
 	}
 
 }

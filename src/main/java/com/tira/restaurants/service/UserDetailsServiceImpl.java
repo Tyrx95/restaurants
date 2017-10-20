@@ -33,9 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	
-    	String ip = getClientIP();
-        if (loginAttemptService.isBlocked(ip)) {
+        if (loginAttemptService.isBlocked(username)) {
             throw new RuntimeException("blocked");
         }
     	
@@ -51,11 +49,4 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
     
-    private String getClientIP() {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null){
-            return request.getRemoteAddr();
-        }
-        return xfHeader.split(",")[0];
-    }
 }

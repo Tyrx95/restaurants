@@ -1,5 +1,7 @@
 package com.tira.restaurants.domain;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -20,8 +23,8 @@ public class Table {
 	@Column(name = "id")
 	private Long id;
 
-	@OneToOne(mappedBy = "table", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private Reservation reservation;
+	@OneToMany(mappedBy = "table", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Reservation> reservations;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idRestaurant")
@@ -63,19 +66,22 @@ public class Table {
 		this.sittingPlaces = sittingPlaces;
 	}
 
-	public void setReservation(Reservation reservation) {
-		this.reservation = reservation;
+	public Set<com.tira.restaurants.domain.Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<com.tira.restaurants.domain.Reservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+	public void addReservation(com.tira.restaurants.domain.Reservation reservation) {
+		reservations.add(reservation);
 		reservation.setTable(this);
 	}
 
-	public Reservation getReservation() {
-		return reservation;
-	}
-
-	@Override
-	public String toString() {
-		return "Table [id=" + id + ", reservation=" + reservation + ", restaurant=" + restaurant + ", sittingPlaces="
-				+ sittingPlaces + "]";
+	public void removeReservation(com.tira.restaurants.domain.Reservation reservation) {
+		reservations.remove(reservation);
+		reservation.setTable(null);
 	}
 
 }

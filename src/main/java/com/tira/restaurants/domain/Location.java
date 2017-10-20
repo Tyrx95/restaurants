@@ -38,8 +38,6 @@ public class Location {
 		this.number = number;
 	}
 	
-	
-
 	public Long getId() {
 		return id;
 	}
@@ -71,12 +69,5 @@ public class Location {
 	public void setRestaurants(Set<Restaurant> restaurants) {
 		this.restaurants = restaurants;
 	}
-
-	@Override
-	public String toString() {
-		return "Location [id=" + id + ", name=" + name + ", number=" + number + ", restaurants=" + restaurants + "]";
-	}
-	
-	
 
 }

@@ -2,8 +2,6 @@ package com.tira.restaurants.dto;
 
 import java.util.Set;
 
-import com.tira.restaurants.domain.Category;
-
 public class RestaurantRequestDTO {
 	
 	private String restaurantName; 
@@ -70,7 +68,5 @@ public class RestaurantRequestDTO {
 	public void setCategories(Set<Long> categories) {
 		this.categories = categories;
 	}
-	
-	
 	
 }

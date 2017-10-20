@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -32,6 +33,7 @@ import com.tira.restaurants.service.CategoryService;
 import com.tira.restaurants.service.CommentService;
 import com.tira.restaurants.service.MealService;
 import com.tira.restaurants.service.ModelMapperService;
+import com.tira.restaurants.service.ReservationService;
 import com.tira.restaurants.service.RestaurantService;
 
 @Controller
@@ -39,6 +41,9 @@ public class RestaurantController {
 	
 	@Autowired 
 	RestaurantService restaurantService;
+	
+	@Autowired
+	ReservationService reservationService;
 	
 	@Autowired 
 	MealService mealService;
@@ -68,6 +73,20 @@ public class RestaurantController {
 		responseBody.put("numberOfRestaurantPages", restaurantPages.getTotalPages());
     	return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
+	
+	@RequestMapping(value = "/allRestaurantsSortReservationsToday", method = RequestMethod.GET,produces="application/json")
+    public ResponseEntity allRestaurantsSortReservationsToday()  {
+		List<Restaurant> restaurants = reservationService.getRestaurantsSortReservationsToday();
+		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
+		
+		for(Restaurant restaurant: restaurants) {
+			restaurantsDTO.add(modelMapperService.convertToRestaurantDto(restaurant));
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(restaurantsDTO);
+		
+    }
+	
 	
 	@RequestMapping(value = "/getRestaurantDetails", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
     public ResponseEntity getRestaurantDetails(@RequestBody Map<String, Object> body)  {

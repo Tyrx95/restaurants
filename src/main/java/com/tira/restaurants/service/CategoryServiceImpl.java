@@ -5,13 +5,11 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 import com.tira.restaurants.domain.Category;
-import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.repository.CategoryRepository;
 
 @Service

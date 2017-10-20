@@ -1,7 +1,5 @@
 package com.tira.restaurants.dto;
 
-import java.time.LocalDateTime;
-
 public class CommentDTO {
 	
 	private Integer mark;
@@ -33,7 +31,5 @@ public class CommentDTO {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
-	
 	
 }

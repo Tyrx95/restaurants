@@ -312,13 +312,5 @@ public class Restaurant {
 		}
 		System.out.println("FoodType is: "+foodType);
 	}
-	
-	@Override
-	public String toString() {
-		return "Restaurant [id=" + id + ", restaurantName=" + restaurantName + ", description=" + description
-				+ ", latitude=" + latitude + ", longitude=" + longitude + ", mark=" + mark + ", votes=" + votes
-				+ ", priceRange=" + priceRange + ", imageFileName=" + imageFileName + ", coverFileName=" + coverFileName
-				+ ", foodType=" + foodType + "]";
-	}
 
 }

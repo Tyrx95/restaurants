@@ -102,10 +102,4 @@ public class Comment {
 		this.comment = comment;
 	}
 
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", mark=" + mark + ", insertTime=" + insertTime + ", user=" + user
-				+ ", restaurant=" + restaurant + "]";
-	}
-
 }

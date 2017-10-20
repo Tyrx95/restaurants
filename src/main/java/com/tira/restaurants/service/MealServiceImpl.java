@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tira.restaurants.domain.Meal;
-import com.tira.restaurants.domain.Table;
 import com.tira.restaurants.dto.MealResponseDTO;
-import com.tira.restaurants.dto.TableDTO;
 import com.tira.restaurants.repository.MealRepository;
 
 @Service

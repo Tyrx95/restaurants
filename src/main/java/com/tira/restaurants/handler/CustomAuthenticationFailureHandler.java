@@ -25,26 +25,6 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException exception) throws IOException, ServletException{
         super.onAuthenticationFailure(request, response, exception);
-        
-//        final String xfHeader = request.getHeader("X-Forwarded-For");
-//        if (xfHeader == null) {
-//        	try {
-//				System.out.println("You have "+(5-loginAttemptService.getAttemptsCache().get(request.getRemoteAddr()))+" attempts.");
-//			} catch (ExecutionException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		} else {
-//			try {
-//				System.out.println("You have "+(5-loginAttemptService.getAttemptsCache().get(xfHeader.split(",")[0]))+" attempts.");
-//			} catch (ExecutionException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//		}
-        
-        
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, "invalid data");
     }
 }

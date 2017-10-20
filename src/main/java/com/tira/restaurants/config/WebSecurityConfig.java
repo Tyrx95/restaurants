@@ -39,8 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                  .logout().logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))).permitAll()
                     .and()
                  .rememberMe()
-                    .rememberMeParameter("rememberMe")
-                    .key("rememberMe");
+                    .rememberMeParameter("rememberMe");
         
         
                     

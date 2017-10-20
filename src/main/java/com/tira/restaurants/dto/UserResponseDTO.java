@@ -1,9 +1,5 @@
 package com.tira.restaurants.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 public class UserResponseDTO {
 
 	private Long id;
