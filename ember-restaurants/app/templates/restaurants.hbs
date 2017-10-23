@@ -1,0 +1,11 @@
+restaruants
+{{#each model as |m|}}
+<br>
+Name: {{m.restaurantName}} <br>
+Description: {{m.description}} <br>
+Latitude: {{m.latitude}} <br>
+Longitude: {{m.longitude}} <br>
+Mark: {{m.mark}} <br>
+{{#link-to 'restaurant' m.id}}See Restaurant{{/link-to}}
+<br>
+{{/each}}

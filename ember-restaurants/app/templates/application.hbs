@@ -1,5 +1,8 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
-
+<h2>Application Route</h2>
+{{#if session.isAuthenticated}}
+  <a href="#" {{action 'logout'}}>Logout</a>
+{{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+<!-- it always goes here! -->
+{{/if}}
 {{outlet}}

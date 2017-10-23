@@ -47,5 +47,18 @@ module.exports = function(environment) {
 
   }
 
+  ENV['ember-simple-auth'] = {
+   base: {
+     store: 'session-store:local-storage',
+     authenticationRoute: 'login',
+     routeAfterAuthentication: 'protected',
+     routeIfAlreadyAuthenticated: 'protected'
+   },
+   localStorage: {
+     key: 'spring_boot:session'
+   }
+ };
+
+
   return ENV;
 };

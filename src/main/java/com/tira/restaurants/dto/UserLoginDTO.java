@@ -24,6 +24,11 @@ public class UserLoginDTO {
 	public void setRememberMe(String rememberMe) {
 		this.rememberMe = rememberMe;
 	}
+	@Override
+	public String toString() {
+		return "UserLoginDTO [email=" + email + ", password=" + password + ", rememberMe=" + rememberMe + "]";
+	}
+	
 	
 	
 }
