@@ -1,11 +1,23 @@
-restaruants
-{{#each model as |m|}}
-<br>
-Name: {{m.restaurantName}} <br>
-Description: {{m.description}} <br>
-Latitude: {{m.latitude}} <br>
-Longitude: {{m.longitude}} <br>
-Mark: {{m.mark}} <br>
-{{#link-to 'restaurant' m.id}}See Restaurant{{/link-to}}
-<br>
-{{/each}}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>All restaurants</h2>
+        </div>
+
+        {{#each (chunk 3 model) as |restaurants_row|}}
+            <div class="row">
+                {{#each restaurants_row as |m|}}
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                      Name: {{m.restaurantName}}
+                      Description: {{m.description}}
+                      FoodType: {{m.foodType}}
+                      <img class="img-responsive" src="{{ m.imageFileName }}" alt="{{ m.restaurantName }}">
+                      {{#link-to 'restaurant' m.id}}See Restaurant{{/link-to}}
+                    </div>
+                {{/each}}
+            </div>
+        {{/each}}
+
+
+    </div>
+</div>
