@@ -13,19 +13,4 @@ export default Ember.Controller.extend({
       });
     }
   }
-
-
-
-
-
-  //     .catch((reason) => {
-  //       this.set('message', reason);
-  //     });
-  //   }
-  // }
-
-
-
-
-
 });

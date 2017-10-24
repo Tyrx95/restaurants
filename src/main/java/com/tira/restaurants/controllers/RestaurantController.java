@@ -82,7 +82,6 @@ public class RestaurantController {
 		for(Restaurant restaurant: restaurants) {
 			restaurantsDTO.add(modelMapperService.convertToRestaurantDto(restaurant));
 		}
-		System.out.println(restaurantsDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(restaurantsDTO);
 		
     }

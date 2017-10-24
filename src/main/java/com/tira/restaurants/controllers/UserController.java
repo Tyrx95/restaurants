@@ -49,10 +49,8 @@ public class UserController {
     
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity login(@RequestBody UserLoginDTO userDTO) throws UsernameNotFoundException {
-    	System.out.println("userDTO:"+userDTO);
     	securityService.login(userDTO.getEmail(), userDTO.getPassword());
     	User user = userService.findByEmail(userDTO.getEmail());
-    	System.out.println("Login succcesfful");
     	return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
     }
     
@@ -69,9 +67,7 @@ public class UserController {
     }
     
     @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces="application/json")
-    public ResponseEntity getCurrentUser(@RequestHeader HttpHeaders httpHeaders){
-    	Map<String,String> headerMap=httpHeaders.toSingleValueMap();
-    	System.out.println("headerMap: "+headerMap);
+    public ResponseEntity getCurrentUser(){
     	User user = userService.getCurrentUser();
     	if(user != null) {
     		System.out.println("Logged in");

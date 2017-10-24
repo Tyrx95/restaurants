@@ -23,7 +23,7 @@ export default BaseAuthenticator.extend({
         data: JSON.stringify({
           email: credentials.email,
           password: credentials.password
-        }) 
+        })
       }).done(function (data, textStatus, xhr) {
         Ember.run(function() {
           resolve({
@@ -41,25 +41,25 @@ export default BaseAuthenticator.extend({
       });
     });
   },
-  // invalidate(data) {
-  //   return new Ember.RSVP.Promise((resolve, reject) => {
-  //     Ember.$.ajax({
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'x-auth-token': data.token,
-  //       },
-  //       url: 'https://localhost/api/session',
-  //       type: 'DELETE'
-  //     }).done(function (data, textStatus, xhr) {
-  //       Ember.run(function() {
-  //         resolve();
-  //       });
-  //     }).fail(function(xhr, textStatus, erroLoginrThrown) {
-  //       Ember.run(function() {
-  //         //reject();
-  //         resolve();
-  //       });
-  //     });
-  //   });
-  // }
+  invalidate(data) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      Ember.$.ajax({
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': data.token,
+        },
+        url: 'https://localhost:8080/logout',
+        type: 'GET'
+      }).done(function (data, textStatus, xhr) {
+        Ember.run(function() {
+          resolve();
+        });
+      }).fail(function(xhr, textStatus, erroLoginrThrown) {
+        Ember.run(function() {
+          //reject();
+          resolve();
+        });
+      });
+    });
+  }
 });
