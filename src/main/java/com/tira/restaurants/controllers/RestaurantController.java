@@ -82,14 +82,14 @@ public class RestaurantController {
 		for(Restaurant restaurant: restaurants) {
 			restaurantsDTO.add(modelMapperService.convertToRestaurantDto(restaurant));
 		}
-		
 		return ResponseEntity.status(HttpStatus.OK).body(restaurantsDTO);
 		
     }
 	
 	
-	@RequestMapping(value = "/getRestaurantDetails", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
+	@RequestMapping(value = "/getRestaurantDetails", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity getRestaurantDetails(@RequestBody Map<String, Object> body)  {
+		
 		Restaurant restaurant = restaurantService.getOne(Long.parseLong((String) body.get("Id")));
 		if(restaurant!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToRestaurantDto(restaurant));

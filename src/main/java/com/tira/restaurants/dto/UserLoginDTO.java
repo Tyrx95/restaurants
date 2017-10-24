@@ -23,7 +23,5 @@ public class UserLoginDTO {
 	}
 	public void setRememberMe(String rememberMe) {
 		this.rememberMe = rememberMe;
-	}
-	
-	
+	}	
 }

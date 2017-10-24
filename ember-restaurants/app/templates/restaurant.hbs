@@ -1,0 +1,66 @@
+<div class="jumbotron index restaurant" style="background-image: url({{ model.imageFileName }});">
+</div>
+
+
+
+<div class="container" id="restaurant-container">
+
+            <div class="col-md-9 col-sm-9 col-xs-12" id="pull-up-column">
+
+
+
+                <div class="card" id="section-about">
+                    <div class="padded">
+                        <div class="title">
+                            <div class="row">
+                                <div class="col-md-12 main">
+                                    About {{ model.restaurantName }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="padded">
+                        <div class="content">
+                           <div class="row">
+                               <div class="col-md-12">
+                                    <div class="subtitle">
+                                        Description
+                                    </div>
+                                    <p class="regular-text">
+                                        {{ model.description }}
+                                    </p>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="row">
+            					<div class="col-md-8 col-md-offset-2">
+            						<h3>Make a reservation</h3>
+            						<div class="form-group">
+            							<label for="occation" class="sr-only">Number of People</label>
+            							<select class="form-control" id="occation">
+            								<option>2 people</option>
+            							  <option>3 people</option>
+            							  <option>4 people</option>
+            							  <option>5+ people</option>
+            							</select>
+            						</div>
+            						<div class="form-group ">
+            							<label for="date" class="sr-only">Date</label>
+            							<input id="date" class="form-control" placeholder="Date &amp; Time" type="text">
+            						</div>
+            						<div class="form-group ">
+            							<input class="btn btn-primary" value="Find a table" type="submit">
+            						</div>
+            						</div>
+            				</div>
+
+
+
+        </div>
