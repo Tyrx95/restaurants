@@ -7,6 +7,10 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('login');
+  this.route('show');
+  this.route('restaurants');
+  this.route('restaurant', { path: 'restaurant/:restaurant_id' });
 });
 
 export default Router;
