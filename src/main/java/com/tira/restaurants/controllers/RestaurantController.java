@@ -76,7 +76,7 @@ public class RestaurantController {
 	
 	@RequestMapping(value = "/allRestaurantsSortReservationsToday", method = RequestMethod.GET,produces="application/json")
     public ResponseEntity allRestaurantsSortReservationsToday()  {
-		List<Restaurant> restaurants = reservationService.getRestaurantsSortReservationsToday();
+		Set<Restaurant> restaurants = reservationService.getRestaurantsSortReservationsToday();
 		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
 		
 		for(Restaurant restaurant: restaurants) {

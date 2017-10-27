@@ -2,16 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 
-  ajax: Ember.inject.service(),
+  restaurantService: Ember.inject.service(),
   model(params) {
-     let res = this.get('ajax').request('/getRestaurantDetails', {
-        method: 'POST',
-        data: JSON.stringify({
-          Id: params.restaurant_id
-        })
-      });
-      console.log(res);
-      return res;
+    return this.get('restaurantService').restaurantDetails(params.restaurant_id);
   }
-
 });

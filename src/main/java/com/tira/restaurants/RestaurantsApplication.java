@@ -25,7 +25,8 @@ public class RestaurantsApplication {
 				registry.addMapping("/allRestaurantsSortReservationsToday").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/getRestaurantDetails").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/logout").allowedOrigins("http://localhost:4200");
-
+				registry.addMapping("/getRestaurantsLocations").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/checkReservationAvailability").allowedOrigins("http://localhost:4200");
 				
 			}
 		};

@@ -3,6 +3,7 @@ package com.tira.restaurants.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,9 +58,9 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<Restaurant> getRestaurantsSortReservationsToday() {
+	public Set<Restaurant> getRestaurantsSortReservationsToday() {
 		Set<Reservation> reservations = reservationRepository.getRestaurantsSortReservationsToday(LocalDate.now());
-		List<Restaurant> restaurants = new ArrayList<>();
+		Set<Restaurant> restaurants = new HashSet<>();
 		for(Reservation reservation : reservations) {
 			restaurants.add(reservation.getRestaurant());
 		}

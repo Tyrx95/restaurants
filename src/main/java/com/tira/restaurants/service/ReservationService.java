@@ -10,5 +10,5 @@ import com.tira.restaurants.domain.Restaurant;
 
 public interface ReservationService{
 	Reservation makeReservation(Integer persons, LocalDate reservationDate, LocalTime reservationHour,Long idRestaurant);
-	List<Restaurant> getRestaurantsSortReservationsToday();
+	Set<Restaurant> getRestaurantsSortReservationsToday();
 }

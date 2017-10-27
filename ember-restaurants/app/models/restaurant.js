@@ -1,15 +1,9 @@
-import DS from 'ember-data';
+import MainModel from 'ember-restaurants/models/main-model';
 
-export default DS.Model.extend({
-  restaurantName: DS.attr(),
-  description: DS.attr(),
-  latitude: DS.attr(),
-  longitude: DS.attr(),
-  mark: DS.attr(),
-  votes: DS.attr(),
-  priceRange: DS.attr(),
-  imageFileName: DS.attr(),
-  coverFileName: DS.attr(),
-  location: DS.attr(),
-  foodType: DS.attr()
+var _modelProperties = ['id', 'restaurantName', 'description', 'latitude', 'longitude',
+  'mark', 'votes', 'priceRange', 'imageFileName', 'coverFileName', 'location',
+  'foodType'
+];
+export default MainModel.extend({
+  modelProps: _modelProperties,
 });

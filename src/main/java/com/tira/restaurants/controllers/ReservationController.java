@@ -4,6 +4,9 @@ package com.tira.restaurants.controllers;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
@@ -44,6 +47,21 @@ public class ReservationController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("No available tables"));
 		}
     }
+	
+	@RequestMapping(value = "/checkReservationAvailability", method = RequestMethod.POST, produces="application/json")
+    public ResponseEntity checkReservationAvailability(@RequestBody Map<String, Object> body)  {
+		
+		Map<String, Object> responseBody = new HashMap<>();
+		responseBody.put("tablesLeft", 5);
+		List<String> timeChoices = new ArrayList<>();
+		timeChoices.add("10:00 AM");
+		timeChoices.add("08:00 AM");	
+		timeChoices.add("08:30 AM");
+		timeChoices.add("09:00 AM");
+		responseBody.put("bestTime",timeChoices);
+		return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+	
 	
 	
 	
