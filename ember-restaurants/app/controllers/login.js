@@ -5,9 +5,10 @@ export default Ember.Controller.extend({
   actions: {
     login() {
       let credentials = this.getProperties('email', 'password');
+      let self = this;
       this.get('session').authenticate('authenticator:spring-boot', credentials).then(() => {
-        this.get('session').isAuthenticated=true;
-        this.transitionToRoute('restaurants');
+        console.log('successful login');
+        self.transitionToRoute('index');
       }, (err) => {
         alert('Error obtaining token: ' + err.responseText);
       });

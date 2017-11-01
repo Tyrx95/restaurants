@@ -1,0 +1,90 @@
+<div class="jumbotron vertical-align index">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="centering text-center">
+                <h1>Make a free reservation</h1>
+
+                <p>Choose restaurants!</p>
+
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Popular for lunch today</h2>
+        </div>
+        {{#each (chunk 3 restaurants) as |restaurants_row|}}
+            <div class="row">
+                {{#each restaurants_row as |item|}}
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                         <div class="restaurant-listing">
+		 {{#link-to 'restaurant' item.id}}<img class="img-responsive" height="100px" src="{{item.imageFileName }}" alt="{{ item.restaurantName }}"/>{{/link-to}}
+
+	<h3 align = "center">{{#link-to 'restaurant' item.id}} {{item.restaurantName}} {{/link-to}} </h3>
+
+	<p class="rating">
+	   ****
+	</p>
+                      <div class = "tags">{{item.foodType}}</div>
+
+	{{#link-to 'restaurant' item.id class='btn btn-default'}}Reserve Now{{/link-to}}
+</div>
+                </div>
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<div id = "about">
+      <div class="container specials">
+        <div class="row">
+          <div class="col-lg-12">
+            <h2>Specials</h2>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col-md-4 col-sm-6 specials-container" >
+              <img class = "img-responsive"  src="/assets/images/specials_1.jpg" alt="">
+            <div class="portfolio-caption">
+              <h5>Best Pizza of 2016</h5>
+              <p>New York | 43 Restaurants</p>
+            </div>
+            </div>
+            <div class="col-md-4 col-sm-6 specials-container" >
+              <img class = "img-responsive"  src="/assets/images/specials_2.jpg" alt="">
+            <div class="portfolio-caption">
+              <h5>Best Pizza of 2016</h5>
+              <p>New York | 43 Restaurants</p>
+            </div>
+            </div>
+            <div class="col-md-4 col-sm-6 specials-container" >
+              <img class = "img-responsive" src="/assets/images/specials_3.jpg" alt="">
+            <div class="portfolio-caption">
+              <h5>Best Pizza of 2016</h5>
+              <p>New York | 43 Restaurants</p>
+            </div>
+            </div>
+
+        </div>
+                    {{#link-to 'restaurants'}}<p class = "specials-link">See all specials</p>{{/link-to}}
+      </div>
+
+</div>
+
+<div class="container">
+    <h2>Popular locations</h2>
+    <ul class="row block-grid-4">
+        {{#each locations as |location|}}
+            <li class="popular-location">
+                <p class="title">{{ location.name }}</p>
+                <p class="subtitle">356</p>
+            </li>
+        {{/each}}
+    </ul>
+</div>

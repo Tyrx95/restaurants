@@ -1,6 +1,8 @@
 package com.tira.restaurants.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +27,7 @@ import com.tira.restaurants.repository.ReservationRepository;
 import com.tira.restaurants.repository.RestaurantRepository;
 import com.tira.restaurants.repository.TableRepository;
 import com.tira.restaurants.repository.UserRepository;
+import com.tira.restaurants.service.ReservationService;
 import com.tira.restaurants.service.RestaurantService;
 import com.tira.restaurants.service.UserService;
 
@@ -40,33 +43,24 @@ public class TestController {
 	@Autowired
 	private TableRepository tableRepository;
 	
+	@Autowired 
+	private LocationRepository locationRepository;
+	
+	@Autowired
+	private ReservationRepository reservationRepository;
 	
 
 
-//	@RequestMapping("/save")
-//	public String process() {
-//		
-//		Location loc = new Location("Zenica", 1);
-//		locationRepository.save(loc);
-//		Set<Category> cats = new HashSet<>();
-//		cats.add(new Category("Chicken"));
-//		System.out.println("Creating Restaurant");
-//		Restaurant res = new Restaurant("iChicken","good.",123.22,122.34, 4, 6, 5, "ifn.jpg", "cfn.jpg", loc, "Chicken", cats);
-//		System.out.println("Restaurant created");
-//		restaurantRepository.save(res);
-//		System.out.println("Restaurant saved on repo");
-//		Meal meal1 = new Meal(res, "Bosnian", "Sarma druze", 666.0, "veri gut");
-//		mealRepository.save(meal1);
-//		User user = new User("tt@gmail.com","062222","Bosnia","Zenica","Tira","tiric","");
-//		userRepository.save(user);
-//		Comment com = new Comment(1, LocalDateTime.MAX, user, res);
-//		commentRepository.save(com);
-//		Table table = new Table(res, 4);
-//		tableRepository.save(table);
-//		Reservation reservation = new Reservation(4, table, user, LocalDateTime.MAX);
-//		reservationRepository.save(reservation);
-//		return "Success";
-//	}
+
+	@RequestMapping("/save")
+	public void save() {
+		Restaurant res = restaurantService.getOne(161L);
+		Table table = new Table(res, 4);
+		tableRepository.save(table);
+		Reservation reservation = new Reservation(4, table, userService.getCurrentUser(), LocalDate.now(), LocalTime.now(),res);
+		reservationRepository.save(reservation);
+		
+	}
 	
 //	@RequestMapping("/addAdminTyrx")
 //	public String addAdmin() {

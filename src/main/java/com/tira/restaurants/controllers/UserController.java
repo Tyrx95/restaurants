@@ -1,5 +1,7 @@
 package com.tira.restaurants.controllers;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +50,7 @@ public class UserController {
     private ModelMapperService modelMapperService;
     
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
-    public ResponseEntity login(@RequestBody UserLoginDTO userDTO) throws UsernameNotFoundException {
+    public ResponseEntity login(@RequestBody UserLoginDTO userDTO, HttpServletRequest request) throws UsernameNotFoundException {
     	securityService.login(userDTO.getEmail(), userDTO.getPassword());
     	User user = userService.findByEmail(userDTO.getEmail());
     	return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
@@ -67,7 +69,8 @@ public class UserController {
     }
     
     @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces="application/json")
-    public ResponseEntity getCurrentUser(){
+    public ResponseEntity getCurrentUser(HttpServletRequest request){
+    	System.out.println(request.getSession());
     	User user = userService.getCurrentUser();
     	if(user != null) {
     		System.out.println("Logged in");
@@ -79,6 +82,4 @@ public class UserController {
     	
     }
     
-   
-
 }

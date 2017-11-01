@@ -2,6 +2,7 @@ package com.tira.restaurants.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
 	public Reservation makeReservation(Integer persons, LocalDate reservationDate, LocalTime reservationHour,
-			Long idRestaurant) {
+			Long idRestaurant, Long idUser) {
 
 		Restaurant restaurant = restaurantRepository.findOne(idRestaurant);
 		//TODO Handle null pointer exception
@@ -51,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService {
 			return null;
 		}
 		
-		Reservation reservation = new Reservation(persons, bestTable, userService.getCurrentUser(), reservationDate, reservationHour, restaurant);
+		Reservation reservation = new Reservation(persons, bestTable, userService.getUser(idUser), reservationDate, reservationHour, restaurant);
 		reservationRepository.save(reservation);
 		return reservation;
 		
@@ -59,7 +60,9 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
 	public Set<Restaurant> getRestaurantsSortReservationsToday() {
-		Set<Reservation> reservations = reservationRepository.getRestaurantsSortReservationsToday(LocalDate.now());
+		LocalDate date = LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		System.out.println(date);
+		Set<Reservation> reservations = reservationRepository.getRestaurantsSortReservationsToday(date);
 		Set<Restaurant> restaurants = new HashSet<>();
 		for(Reservation reservation : reservations) {
 			restaurants.add(reservation.getRestaurant());

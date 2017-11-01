@@ -27,6 +27,7 @@ public class RestaurantsApplication {
 				registry.addMapping("/logout").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/getRestaurantsLocations").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/checkReservationAvailability").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/makeReservation").allowedOrigins("http://localhost:4200");
 				
 			}
 		};
@@ -38,6 +39,7 @@ public class RestaurantsApplication {
 	    crlf.setIncludeClientInfo(true);
 	    crlf.setIncludeQueryString(true);
 	    crlf.setIncludePayload(true);
+	    crlf.setIncludeHeaders(true);
 	    return crlf;
 	}
 	

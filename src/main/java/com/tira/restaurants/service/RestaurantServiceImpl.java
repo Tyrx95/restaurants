@@ -84,21 +84,44 @@ public class RestaurantServiceImpl implements RestaurantService {
 	
 
 	private void editRestaurantValues(Restaurant restaurant, RestaurantEditDTO editRestaurantDTO) {
-		Location location = locationService.getLocation(editRestaurantDTO.getLocation());
-		restaurant.setLocation(location);
-		Set<Category> categories = categoryService.getCategories(editRestaurantDTO.getCategories());
-		restaurant.setCategories(categories);
-		restaurant.setLongitude(editRestaurantDTO.getLongitude());
-		restaurant.setLatitude(editRestaurantDTO.getLatitude());
-		restaurant.setRestaurantName(editRestaurantDTO.getRestaurantName());
-		restaurant.setPriceRange(editRestaurantDTO.getPriceRange());
-		restaurant.setDescription(editRestaurantDTO.getDescription());
-		restaurant.setImageFileName(editRestaurantDTO.getImageFileName());
-		restaurant.setCoverFileName(editRestaurantDTO.getCoverFileName());
-		restaurant.setMark(editRestaurantDTO.getMark());
-		restaurant.setVotes(editRestaurantDTO.getVotes());
-		restaurant.setFoodType(editRestaurantDTO.getFoodType());
+		if (editRestaurantDTO.getLocation() != null) {
+			Location location = locationService.getLocation(editRestaurantDTO.getLocation());
+			restaurant.setLocation(location);
+		}
+		if (editRestaurantDTO.getCategories() != null) {
+			Set<Category> categories = categoryService.getCategories(editRestaurantDTO.getCategories());
+			restaurant.setCategories(categories);
+		}
+		if (editRestaurantDTO.getLongitude() != null) {
+			restaurant.setLongitude(editRestaurantDTO.getLongitude());
+		}
+		if (editRestaurantDTO.getLatitude() != null) {
+			restaurant.setLatitude(editRestaurantDTO.getLatitude());
+		}
+		if (editRestaurantDTO.getRestaurantName() != null) {
+			restaurant.setRestaurantName(editRestaurantDTO.getRestaurantName());
+		}
+		if (editRestaurantDTO.getPriceRange() != null) {
+			restaurant.setPriceRange(editRestaurantDTO.getPriceRange());
+		}
+		if (editRestaurantDTO.getDescription() != null) {
+			restaurant.setDescription(editRestaurantDTO.getDescription());
+		}
+		if(editRestaurantDTO.getImageFileName() != null) {
+			restaurant.setImageFileName(editRestaurantDTO.getImageFileName());
+		}
+		if (editRestaurantDTO.getCoverFileName() != null) {
+			restaurant.setCoverFileName(editRestaurantDTO.getCoverFileName());
+		}
+		if (editRestaurantDTO.getMark() != null) {
+			restaurant.setMark(editRestaurantDTO.getMark());
+		}
+		if (editRestaurantDTO.getVotes() != null) {
+			restaurant.setVotes(editRestaurantDTO.getVotes());
+		}
+		if (editRestaurantDTO.getFoodType() != null) {
+			restaurant.setFoodType(editRestaurantDTO.getFoodType());
+		}
 	}
-
 	
 }

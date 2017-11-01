@@ -35,10 +35,16 @@ public class ReservationController {
 	
 	@RequestMapping(value = "/makeReservation", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity makeReservation(@RequestBody Map<String, Object> body)  {
-		Reservation reservation = reservationService.makeReservation((Integer) body.get("persons"), 
-						LocalDate.parse((String)body.get("reservationDate"), DateTimeFormatter.ofPattern("MMM dd, yyyy")),
+		
+		String persons = (String) body.get("persons");
+		Integer numPersons =Integer.parseInt(persons.split("\\s+")[0]);
+		String date = ((String) body.get("reservationDate")).split("T")[0];
+		LocalDate _date = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		Reservation reservation = reservationService.makeReservation(numPersons, 
+						_date,
 						LocalTime.parse((String)body.get("reservationHour"), DateTimeFormatter.ofPattern("hh:mm a")), 
-						new Long((Integer) body.get("idRestaurant")));
+						new Long((Integer) body.get("idRestaurant")),
+						new Long((Integer) body.get("idUser")));
 		if(reservation!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToResponseSuccessfulReservationDTO(reservation));
 		}	
@@ -46,6 +52,7 @@ public class ReservationController {
 		else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("No available tables"));
 		}
+		
     }
 	
 	@RequestMapping(value = "/checkReservationAvailability", method = RequestMethod.POST, produces="application/json")

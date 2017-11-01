@@ -12,6 +12,7 @@ export default BaseAuthenticator.extend({
     });
   },
   authenticate(credentials) {
+    var self = this;
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
         headers: {
@@ -26,17 +27,12 @@ export default BaseAuthenticator.extend({
         })
       }).done(function (data, textStatus, xhr) {
         Ember.run(function() {
-          resolve({
-              token: xhr.getResponseHeader('x-auth-token')
-            });
+          resolve(data);
         });
-      }).fail(function(xhr, textStatus, errorThrown) {
+      }).fail(function(xhr, textStatus, erroLoginrThrown) {
         Ember.run(function() {
-          if(xhr.status === 0) {
-            reject('Please check your internet connection!');
-          } else {
-            reject(xhr.responseJSON.message);
-          }
+          //reject();
+          resolve();
         });
       });
     });

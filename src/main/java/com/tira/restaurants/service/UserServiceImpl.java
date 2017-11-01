@@ -68,7 +68,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getCurrentUser() {
-		return userRepository.findByEmail(securityService.findLoggedInEmail());
+		//return userRepository.findByEmail(securityService.findLoggedInEmail());
+		return userRepository.findByEmail("amartiric@gmail.com");
 	}
 
 	@Override
