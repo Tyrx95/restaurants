@@ -41,17 +41,13 @@ export default Ember.Controller.extend({
           this.set('reservationTime',time);
           this.transitionToRoute('reservation');
         }
-
-        if (result.tablesLeft > 0) {
-
           this.set('availableTimes', result.bestTime);
           this.set('hasError', false);
           this.set('hasAvailable',true);
-        }
-        else{
-          this.set('error',"No tables available for specified time.");
+      }.bind(this), function(data) {
+          this.set('error',"No tables available, please try some other time.");
           this.set('hasError',true);
-        }
+          alert(this.get('error'));
       }.bind(this));
     },
 

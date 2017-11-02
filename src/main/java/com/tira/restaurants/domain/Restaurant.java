@@ -293,14 +293,11 @@ public class Restaurant {
 	}
 
 	private void updateFoodType() { 
-		System.out.println("Updating food categories: "+ categories);
 		foodType="";
 		if(categories == null || categories.isEmpty() ) {
 			foodType+="-";
 		}
 		else {
-			System.out.println("Adding categories to foodType");
-			
 			for(Category category : categories) {
 				if(foodType.equals("")) {
 					foodType+= category.getName();
@@ -310,7 +307,6 @@ public class Restaurant {
 				}
 			}
 		}
-		System.out.println("FoodType is: "+foodType);
 	}
 
 }
