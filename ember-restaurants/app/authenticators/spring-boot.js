@@ -29,10 +29,9 @@ export default BaseAuthenticator.extend({
         Ember.run(function() {
           resolve(data);
         });
-      }).fail(function(xhr, textStatus, erroLoginrThrown) {
+      }).fail(function(xhr, textStatus, error) {
         Ember.run(function() {
-          //reject();
-          resolve();
+          reject(xhr.responseJSON.error);
         });
       });
     });

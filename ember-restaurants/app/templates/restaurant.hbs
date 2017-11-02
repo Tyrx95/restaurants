@@ -46,10 +46,13 @@
             {{/if}}
 
             {{#if session.isAuthenticated}}
-              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#rateModal"><i class="fa fa-star" aria-hidden="true"></i> Rate this place</button>
+              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#commentModal"><i class="fa fa-star" aria-hidden="true"></i> Rate this place</button>
             {{else}}
               <button type="button" class="btn btn-default" disabled="true"><i class="fa fa-star" aria-hidden="true"></i>Login to rate</button>
             {{/if}}
+
+            {{modal-rate theComment=comment actionRateClicked=(action "rateClicked") actionRate=(action "rate")}}
+
 
 
 

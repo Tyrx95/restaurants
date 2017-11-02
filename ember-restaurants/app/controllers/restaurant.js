@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import Reservation from 'ember-restaurants/models/reservation';
+import Comment from 'ember-restaurants/models/comment';
 
 export default Ember.Controller.extend({
   session: Ember.inject.service(),
   reservationService: Ember.inject.service(),
+  restaurantService: Ember.inject.service(),
   hasAvailable: false,
   availableTimes: [],
   hasError: false,
@@ -13,6 +15,10 @@ export default Ember.Controller.extend({
     persons: "1 people",
     date: new Date(),
     hour: "11:00 AM"
+  }),
+  comment: Comment.create({
+    mark: 0,
+    comment:""
   }),
   clear: function() {
         this.setProperties({
@@ -29,6 +35,13 @@ export default Ember.Controller.extend({
       var reservation = this.get('reservation');
       this.get('reservationService').checkReservationAvailability(restaurantId, reservation).then(function(result) {
         this.set('numOfTables', result.tablesLeft);
+        console.log(result);
+        if(result.isAvailable){
+          var time = this.get('reservation.hour');
+          this.set('reservationTime',time);
+          this.transitionToRoute('reservation');
+        }
+
         if (result.tablesLeft > 0) {
 
           this.set('availableTimes', result.bestTime);
@@ -45,6 +58,26 @@ export default Ember.Controller.extend({
     reserveTable: function(time){
         this.set('reservationTime',time);
         this.transitionToRoute('reservation');
+    },
+
+    rateClicked: function(params) {
+        console.log(params);
+        this.set('comment.mark', params.rating);
+    },
+
+    rate: function(){
+       var idRestaurant = this.get('model.id');
+       var idUser = this.get('session.data.authenticated.id');
+       var mark = this.get('comment.mark');
+       var comment = this.get('comment.comment');
+
+       this.get('restaurantService').insertComment(idRestaurant, idUser, mark, comment).then(function(data) {
+                console.log("success:"+ data);
+            }.bind(this), function() {
+                console.log("Error while rating.");
+            });
     }
+
+
   }
 });

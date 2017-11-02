@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
         console.log('successful login');
         self.transitionToRoute('index');
       }, (err) => {
-        alert('Error obtaining token: ' + err.responseText);
+        alert(err);
       });
     }
   }

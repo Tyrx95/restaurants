@@ -56,17 +56,20 @@ public class ReservationController {
     }
 	
 	@RequestMapping(value = "/checkReservationAvailability", method = RequestMethod.POST, produces="application/json")
-    public ResponseEntity checkReservationAvailability(@RequestBody Map<String, Object> body)  {
+    public ResponseEntity<Map<String,Object>> checkReservationAvailability(@RequestBody Map<String, Object> body)  {
+		String persons = (String) body.get("people");
+		Integer numPersons =Integer.parseInt(persons.split("\\s+")[0]);
+		String dateString = ((String) body.get("date")).split("T")[0];
+		LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalTime time = LocalTime.parse((String)body.get("hour"), DateTimeFormatter.ofPattern("hh:mm a"));
+		Long idRestaurant = new Long((Integer) body.get("idRestaurant"));
 		
-		Map<String, Object> responseBody = new HashMap<>();
-		responseBody.put("tablesLeft", 5);
-		List<String> timeChoices = new ArrayList<>();
-		timeChoices.add("10:00 AM");
-		timeChoices.add("08:00 AM");	
-		timeChoices.add("08:30 AM");
-		timeChoices.add("09:00 AM");
-		responseBody.put("bestTime",timeChoices);
+		Map<String, Object> responseBody = reservationService.checkReservationAvailability(numPersons,date,time,idRestaurant);
+		if(responseBody.get("error")!=null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+		
     }
 	
 	

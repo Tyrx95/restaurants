@@ -15,4 +15,16 @@ export default Ember.Service.extend({
       })
     });
   },
+
+  insertComment: function(_idRestaurant, _idUser, _mark, _comment){
+    return this.get('ajaxService').request('insertComment',{
+      method: 'POST',
+      data: JSON.stringify({
+        mark: _mark,
+        comment: _comment,
+        idRestaurant: _idRestaurant,
+        idUser: _idUser
+      })
+    });
+  }
 });
