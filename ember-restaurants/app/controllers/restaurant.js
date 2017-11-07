@@ -69,6 +69,7 @@ export default Ember.Controller.extend({
 
        this.get('restaurantService').insertComment(idRestaurant, idUser, mark, comment).then(function(data) {
                 console.log("success:"+ data);
+                this.send('afterRate');
             }.bind(this), function() {
                 console.log("Error while rating.");
             });

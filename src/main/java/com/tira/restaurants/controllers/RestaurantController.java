@@ -114,7 +114,7 @@ public class RestaurantController {
 	@RequestMapping(value = "/insertComment", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
     public ResponseEntity insertComment(@RequestBody Map<String, Object> body)  {
 		commentService.insertComment((Integer) body.get("mark"), (Integer) body.get("idUser") , (Integer) body.get("idRestaurant") , (String) body.get("comment"));
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
 		
     }
 	

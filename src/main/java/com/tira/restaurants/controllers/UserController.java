@@ -60,7 +60,7 @@ public class UserController {
     public ResponseEntity register(@RequestBody @Valid UserRegisterDTO userDTO, BindingResult bindingResult){
     	userValidator.validate(userDTO, bindingResult);
     	if(bindingResult.hasErrors()) {
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldError().getDefaultMessage());
     	}
     	
     	User user = modelMapperService.convertToUserEntity(userDTO);

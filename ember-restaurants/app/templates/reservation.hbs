@@ -1,5 +1,5 @@
-
-<div class="container" id="normal-container">
+<section id="normal-container">
+    <div class="container">
    <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12 col-centered">
           <div class="row">
@@ -49,10 +49,6 @@
        </div>
 
    </div>
-
-</div>
-
-
 <div class="container">
 	<div class="row">
               <div class="col-md-6 col-sm-8 col-xs-12 col-centered">
@@ -64,9 +60,16 @@
                 {{#if session.isAuthenticated}}
               	<button class="btn btn-primary" style="width: 100%;" {{action "makeReservation"}}>Complete your reservation</button>
                 {{else}}
-                <p style="text-align: center;">Please log in to make a reservation.</p>
+                <p style="text-align: center;">Please
+                  {{#link-to 'login'}}log in{{/link-to}}
+                  or
+                  {{#link-to 'register'}}register{{/link-to}}
+                  to make a reservation.</p>
                 {{/if}}
 
               </div>
       </div>
 </div>
+
+</div>
+</section>

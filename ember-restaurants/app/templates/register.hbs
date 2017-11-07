@@ -1,0 +1,49 @@
+<section id="login">
+    <div class="container">
+    	<div class="row">
+    	    <div class="col-xs-12">
+        	    <div class="form-wrap">
+                    <div class = "row login-head">
+                        <div class = "col-md-6 col-sm-6">
+                            <h1>Create Account</h1>
+                        </div>
+                        <div class = "col-md-6 col-sm-6 create-account">
+                           {{#link-to 'login'}}Login{{/link-to}}
+                        </div>
+                        </div>
+                    <form {{action 'register' on='submit'}} id="register-form" autocomplete="off">
+                        <div class="form-group">
+                            <label for="firstName" class="sr-only">First Name</label>
+                            {{input id='firstName' class = "form-control" placeholder='First Name' value=firstName}}
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="sr-only">Last Name</label>
+                            {{input id='lastName' class = "form-control" placeholder='Last Name' value=lastName}}
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="sr-only">Email</label>
+                            {{input id='email' class = "form-control" placeholder='Email' value=email}}
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="sr-only">Phone</label>
+                            {{input id='phone' class = "form-control" placeholder='Phone' value=phone}}
+                        </div>
+                        <div class="form-group">
+                            <label for="country" class="sr-only">Country</label>
+                            {{input id='country' class = "form-control" placeholder='Country' value=country}}
+                        </div>
+                        <div class="form-group">
+                            <label for="city" class="sr-only">City</label>
+                            {{input id='city' class = "form-control" placeholder='City' value=city}}
+                        </div>
+                        <div class="form-group">
+                            <label for="key" class="sr-only">Password</label>
+                            {{input id='password' class = "form-control" placeholder='Password' type='password' value=password}}
+                        </div>
+                        <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Create Account">
+                    </form>
+        	    </div>
+    		</div> <!-- /.col-xs-12 -->
+    	</div> <!-- /.row -->
+    </div> <!-- /.container -->
+</section>

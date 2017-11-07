@@ -27,9 +27,21 @@
 
 	<h3 align = "center">{{#link-to 'restaurant' item.id}} {{item.restaurantName}} {{/link-to}} </h3>
 
-	<p class="rating">
-	   ****
-	</p>
+    <div class = "row">
+	<div class="col-md-3">
+	   <i class="fa fa-star" aria-hidden="true">■</i>
+     <i class="fa fa-star" aria-hidden="true">■</i>
+     <i class="fa fa-star" aria-hidden="true">■</i>
+     <i class="fa fa-star.inactive" aria-hidden="true">□</i>
+     <i class="fa fa-star.inactive" aria-hidden="true">□</i>
+	</div>
+  <div class="col-md-3">
+	   [1758]
+	</div>
+        <div class="col-md-6">
+	  $$$
+	</div>
+        </div>
                       <div class = "tags">{{item.foodType}}</div>
 
 	{{#link-to 'restaurant' item.id class='btn btn-default'}}Reserve Now{{/link-to}}

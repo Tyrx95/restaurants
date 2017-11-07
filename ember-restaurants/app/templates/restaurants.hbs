@@ -3,8 +3,8 @@
         <div class="col-md-12">
             <h2>All restaurants</h2>
         </div>
-
-        {{#each (chunk 3 model) as |restaurants_row|}}
+        {{log 'restaurants:' model.restaurants}}
+        {{#each (chunk 3 model.restaurants.restaurants) as |restaurants_row|}}
             <div class="row">
                 {{#each restaurants_row as |m|}}
                     <div class="col-md-4 col-sm-6 col-xs-12">
@@ -17,7 +17,16 @@
                 {{/each}}
             </div>
         {{/each}}
-
-
     </div>
+</div>
+
+<div class="container">
+    <h2>Popular locations</h2>
+    <ul class="row block-grid-4">
+        {{#each model.locations as |location|}}
+            <li class="popular-location">
+                <p class="title">{{ location.name }}</p>
+            </li>
+        {{/each}}
+    </ul>
 </div>

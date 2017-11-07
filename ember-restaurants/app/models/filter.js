@@ -1,7 +1,7 @@
 import MainModel from 'ember-restaurants/models/main-model';
 
-var _modelProperties = ['id', 'name'];
+var _modelProps = ['pageNumber', 'itemsPerPage', 'searchText'];
 
 export default MainModel.extend({
-	modelProps: _modelProperties,
+  modelProps : _modelProps,
 });

@@ -7,6 +7,17 @@ export default Ember.Service.extend({
     return this.get('ajaxService').request('/allRestaurantsSortReservationsToday');
   },
 
+  getRestaurantsByFilter: function(filter) {
+    return this.get('ajaxService').request('/getRestaurantsByFilter', {
+      method: 'POST',
+      data: JSON.stringify({
+        searchText: filter.searchText,
+        pageNumber: filter.pageNumber,
+        itemsPerPage: filter.itemsPerPage
+      })
+    });
+  },
+
   restaurantDetails: function(id) {
     return this.get('ajaxService').request('/getRestaurantDetails', {
       method: 'POST',

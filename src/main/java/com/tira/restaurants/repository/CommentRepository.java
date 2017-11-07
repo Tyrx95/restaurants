@@ -14,5 +14,7 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
 
 	@Query("SELECT c FROM Comment c WHERE c.restaurant.id = :restaurantId ")
 	List<Comment> findAllCommentsByRestaurantId(@Param("restaurantId") Long restaurantId);
-
+	
+	@Query("SELECT c FROM Comment c where c.restaurant.id = :restaurantId AND c.user.id = :userId")
+	Comment findCommentByRestaurantAndUser(@Param("restaurantId") Long restaurantId,@Param("userId") Long userId);
 }

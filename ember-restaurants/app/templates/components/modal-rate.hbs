@@ -3,14 +3,9 @@
     <div class="modal-content">
       <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal"><span class="fa fa-remove" aria-hidden="true"></span></button>
-
-        <p class="title">Rate this place</p>
-
-        {{star-rating item=theComment rating=theComment.mark on-click=(action (action actionRateClicked))}}
-
-        {{textarea class="review" value=theComment.comment}}
-
-        <button type="button" class="btn btn-primary" data-dismiss="modal" {{action (action actionRate) }}>Save</button>
+            {{star-rating item=theComment rating=theComment.mark on-click=(action (action actionRateClicked))}}
+            {{textarea class="review" value=theComment.comment cols="80" rows="6"}}
+          <button type="button" class="btn btn-primary" data-dismiss="modal" {{action (action actionRate) }}>Save</button>
       </div>
     </div>
   </div>
