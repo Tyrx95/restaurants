@@ -31,6 +31,7 @@ public class RestaurantsApplication {
 				registry.addMapping("/insertComment").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/register").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/getRestaurantsByFilter").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/getAllCategories").allowedOrigins("http://localhost:4200");
 				
 				
 			}

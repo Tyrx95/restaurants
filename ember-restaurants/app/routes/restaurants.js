@@ -6,9 +6,25 @@ export default Ember.Route.extend({
   locationService: Ember.inject.service(),
   model() {
     return Ember.RSVP.hash({
-      restaurants: this.get('restaurantService').getRestaurantsByFilter(Filter.create(
-        {pageNumber: 1, itemsPerPage: 9})),
-      locations: this.get('locationService').allLocations()
+      searchResponse: this.get('restaurantService').getRestaurantsByFilter({
+        pageNumber: 1,
+        itemsPerPage: 3
+      }),
+      locations: this.get('locationService').allLocations(),
+      categories: this.get('restaurantService').getAllCategories()
     });
+  },
+  actions: {
+    willTransition: function() {
+      var filter = Filter.create({
+        pageNumber: 1,
+        itemsPerPage: 3,
+        searchText: "",
+        priceRange: 0,
+        rating: 0
+      });
+      this.controller.set('filter', filter);
+      console.log(this.controller.get('filter'));
+    }
   }
 });

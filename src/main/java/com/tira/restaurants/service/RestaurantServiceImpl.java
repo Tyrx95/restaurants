@@ -6,12 +6,14 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Restaurant;
+import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.RestaurantEditDTO;
 import com.tira.restaurants.repository.RestaurantRepository;
 
@@ -28,13 +30,22 @@ public class RestaurantServiceImpl implements RestaurantService {
 	CategoryService categoryService;
 	
 	@Override
-	public Page<Restaurant> getByFilter(String searchText, Pageable pageable) {
-		
-		if(searchText!=null) {
-			return repository.getRestaurantsByFilter(searchText,pageable);
+	public Page<Restaurant> getByFilter(FilterDTO filter) {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
+		Integer rating = filter.getRating();
+		Integer priceRange = filter.getPriceRange();
+		List<String> categories = filter.getCategories();
+		String foodType="";
+		if(categories!=null && !categories.isEmpty()) {
+			foodType+=categories.remove(0);
+			for(String category: categories) {
+				foodType+=category;
+				foodType+=" | ";
+			}
 		}
-		else return repository.findAll(pageable);
 		
+		return repository.getRestaurantsByFilter(searchText,foodType,priceRange, rating, pageReq);
 	}
 
 	@Override

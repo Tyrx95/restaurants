@@ -59,9 +59,9 @@ public class RestaurantController {
 	
 	@RequestMapping(value = "/getRestaurantsByFilter", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity getRestaurantsByFilter(@RequestBody FilterDTO filter)  {
-		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
-		String searchText = filter.getSearchText();
-		Page<Restaurant> restaurantPages = restaurantService.getByFilter(searchText,pageReq);
+		System.out.println(filter);
+		
+		Page<Restaurant> restaurantPages = restaurantService.getByFilter(filter);
 		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
 		
 		for(Restaurant restaurant : restaurantPages.getContent()) {

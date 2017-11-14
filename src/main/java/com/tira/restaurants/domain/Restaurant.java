@@ -292,7 +292,7 @@ public class Restaurant {
 		reservation.setRestaurant(null);
 	}
 
-	private void updateFoodType() { 
+	public void updateFoodType() { 
 		foodType="";
 		if(categories == null || categories.isEmpty() ) {
 			foodType+="-";

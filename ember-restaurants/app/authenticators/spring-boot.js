@@ -4,7 +4,7 @@ import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 export default BaseAuthenticator.extend({
   restore(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      if (!Ember.isEmpty(data.token)) {
+      if (!Ember.isEmpty(data)) {
         resolve(data);
       } else {
         reject();

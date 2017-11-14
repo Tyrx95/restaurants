@@ -6,14 +6,19 @@ export default Ember.Service.extend({
   restaurantsForToday: function() {
     return this.get('ajaxService').request('/allRestaurantsSortReservationsToday');
   },
-
+  getAllCategories: function() {
+    return this.get('ajaxService').request('/getAllCategories');
+  },
   getRestaurantsByFilter: function(filter) {
     return this.get('ajaxService').request('/getRestaurantsByFilter', {
       method: 'POST',
       data: JSON.stringify({
         searchText: filter.searchText,
         pageNumber: filter.pageNumber,
-        itemsPerPage: filter.itemsPerPage
+        itemsPerPage: filter.itemsPerPage,
+        categories: filter.categories,
+        priceRange: filter.priceRange,
+        rating: filter.rating
       })
     });
   },

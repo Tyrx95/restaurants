@@ -8,10 +8,10 @@
         <h3>{{ model.restaurantName }}</h3>
         <p class="rating">
             {{#each active as |star|}}
-              <i class="fa fa-star" aria-hidden="true">■</i>
+              <i class="fa fa-square" aria-hidden="true"></i>
             {{/each}}
             {{#each notActive as |star|}}
-					    	<i class="fa fa-star inactive" aria-hidden="true">■</i>
+					    	<i class="fa fa-square-o" aria-hidden="true"></i>
 						{{/each}}
           <span class="count">({{model.votes}})</span>
         </p>
@@ -25,9 +25,9 @@
                     {{model.foodType }}
                     </span>
         {{#if session.isAuthenticated}}
-          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#commentModal"><i class="fa fa-star" aria-hidden="true"></i> Rate this place</button>
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#commentModal"><i class="fa fa-square" aria-hidden="true"></i> Rate this place</button>
         {{else}}
-          <button type="button" class="btn btn-default" disabled="true"><i class="fa fa-star" aria-hidden="true"></i>Login to rate</button>
+          <button type="button" class="btn btn-default" disabled="true"><i class="fa fa-square" aria-hidden="true"></i>Login to rate</button>
         {{/if}}
       </div>
     </div>

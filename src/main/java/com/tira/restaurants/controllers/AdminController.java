@@ -190,9 +190,7 @@ public class AdminController {
 	
 	@RequestMapping(value = "/getFilteredRestaurants", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity getFilteredRestaurants(@RequestBody FilterDTO filter)  {
-		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
-		String searchText = filter.getSearchText();
-		Page<Restaurant> restaurantPages = restaurantService.getByFilter(searchText,pageReq);
+		Page<Restaurant> restaurantPages = restaurantService.getByFilter(filter);
 		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
 		
 		for(Restaurant restaurant : restaurantPages.getContent()) {

@@ -8,10 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Restaurant;
+import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.RestaurantEditDTO;
 
 public interface RestaurantService {
-	Page<Restaurant> getByFilter(String searchText, Pageable pageable);
+	Page<Restaurant> getByFilter(FilterDTO filter);
 	Restaurant getOne(Long id);
 	long getRestaurantsCount();
 	void addRestaurant(Restaurant restaurant);
