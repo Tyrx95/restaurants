@@ -101,12 +101,13 @@ public class RestaurantController {
 	
 	@RequestMapping(value = "/getRestaurantMenu", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
     public ResponseEntity getRestaurantMenu(@RequestBody Map<String, Object> body)  {
+		System.out.println("getRestaurantMenu request BODY :" + body);
 		List<Meal> menu = mealService.getRestaurantMenu(Long.parseLong((String) body.get("idRestaurant")), (String) body.get("type"));
 		List<MealResponseDTO> menuDTO = new ArrayList<>();
 		for(Meal meal : menu) {
 			menuDTO.add(modelMapperService.convertToMealDto(meal));
 		}
-		
+		System.out.println("Printing menuDTO:"+menuDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(menuDTO);
 		
     }

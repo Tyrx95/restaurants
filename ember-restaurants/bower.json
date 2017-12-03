@@ -1,7 +1,7 @@
 {
   "name": "ember-restaurants",
   "dependencies": {
-    "selectize": "miguelcobain/selectize.js#master",
-    "bootstrap-datepicker": "^1.7.1"
+    "bootstrap-datepicker": "^1.7.1",
+    "selectize": "miguelcobain/selectize.js#master"
   }
 }

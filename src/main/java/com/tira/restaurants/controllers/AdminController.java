@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.tira.restaurants.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,6 +75,9 @@ public class AdminController {
 	
 	@Autowired
 	MealService mealService;
+
+	@Autowired
+	private UserValidator userValidator;
 	
 	
 	@RequestMapping(value = "/getFilteredLocations", method = RequestMethod.POST, produces="application/json")
@@ -124,7 +129,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteLocation", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteLocation(@RequestBody Map<String, Object> requestBody)  {
 		locationService.deleteLocation(convertToLong(requestBody.get("id")));
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
     }
 	
 	@RequestMapping(value = "/getLocationDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
@@ -176,7 +181,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteCategory", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteCategory(@RequestBody Map<String, Object> requestBody)  {
 		categoryService.deleteCategory(convertToLong(requestBody.get("id")));
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
     }
 	
 	@RequestMapping(value = "/getCategoryDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
@@ -223,7 +228,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteRestaurant(@RequestBody Map<String, Object> requestBody)  {
 		restaurantService.deleteRestaurant(convertToLong(requestBody.get("id")));
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
     }
 	
 	@RequestMapping(value = "/getAllRestaurantComments", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
@@ -262,9 +267,12 @@ public class AdminController {
 		List<UserResponseDTO> usersDTO = new ArrayList<>();
 		
 		for(User user : userPages.getContent()) {
+			System.out.println("user: "+user);
 			usersDTO.add(modelMapperService.convertToUserDto(user));
 		}
-		
+
+		System.out.println("users dto is:"+usersDTO);
+
 		Map<String, Object> responseBody = new HashMap<>();
 		responseBody.put("users", usersDTO);
 		responseBody.put("numberOfPages", userPages.getTotalPages());
@@ -272,7 +280,12 @@ public class AdminController {
     }
 	
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces="application/json")
-    public ResponseEntity addUser(@RequestBody UserRegisterDTO userDTO)  {
+    public ResponseEntity addUser(@RequestBody UserRegisterDTO userDTO, BindingResult bindingResult)  {
+		userValidator.validate(userDTO, bindingResult);
+		if(bindingResult.hasErrors()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldError().getDefaultMessage());
+		}
+
 		User user = modelMapperService.convertToUserEntity(userDTO);
 		userService.save(user);
 		return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToUserDto(user));
@@ -289,13 +302,13 @@ public class AdminController {
 	
 	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity deleteUser(@RequestBody Map<String, Object> requestBody)  {
-		userService.deleteUser((convertToLong(requestBody.get("idRestaurant"))));
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		userService.deleteUser((convertToLong(requestBody.get("id"))));
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
     }
 	
 	@RequestMapping(value = "/getUserDetails", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
     public ResponseEntity getUserDetails(@RequestBody Map<String, Object> requestBody)  {
-		User user = userService.getUser((convertToLong(requestBody.get("idRestaurant"))));
+		User user = userService.getUser((convertToLong(requestBody.get("id"))));
 		if(user == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
 		}
@@ -332,7 +345,13 @@ public class AdminController {
 			tableService.deleteTables(convertToTablesDTO(deleteTablesLHM));
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
+	}
+
+	@RequestMapping(value = "/promoteUser", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
+	public ResponseEntity promoteUser(@RequestBody Map<String, Object> requestBody)  {
+		userService.promoteUser(convertToLong(requestBody.get("id")));
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
 	}
 	
 	@RequestMapping(value = "/adminMenuItems", method = RequestMethod.POST, consumes = "application/json",produces="application/json")
@@ -352,7 +371,7 @@ public class AdminController {
 			mealService.deleteMeals(convertToMealsDTO(deleteMealsLHM));
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
 	}
 	
 

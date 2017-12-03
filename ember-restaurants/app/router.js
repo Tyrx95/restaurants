@@ -13,6 +13,32 @@ Router.map(function() {
   this.route('restaurant', { path: 'restaurant/:restaurant_id' });
   this.route('reservation');
   this.route('register');
+  this.route('current-user');
+  this.route('admin', function() {
+    this.route('restaurants', function() {
+      this.route('edit',{ path: '/edit/:id' },function() {
+        this.route('tables');
+        this.route('menu');
+      });
+      this.route('add', function() {
+        this.route('menu');
+        this.route('tables');
+      });
+    });
+    this.route('locations', function() {
+      this.route('add');
+      this.route('edit',{ path: '/edit/:id'});
+    });
+    this.route('users', function() {
+      this.route('add');
+      this.route('edit',{ path: '/edit/:id'});
+    });
+    this.route('categories', function() {
+      this.route('add');
+      this.route('edit',{ path: '/edit/:id'});
+    });
+
+  });
 });
 
 export default Router;

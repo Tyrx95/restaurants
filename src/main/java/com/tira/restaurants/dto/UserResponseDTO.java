@@ -1,5 +1,9 @@
 package com.tira.restaurants.dto;
 
+import java.util.Set;
+
+import com.tira.restaurants.domain.Role;
+
 public class UserResponseDTO {
 
 	private Long id;
@@ -9,6 +13,7 @@ public class UserResponseDTO {
 	private String city;
 	private String firstName;
 	private String lastName;
+	private Set<String> roles;
 	
 	
 	public Long getId() {
@@ -52,5 +57,25 @@ public class UserResponseDTO {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public Set<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "UserResponseDTO{" +
+				"id=" + id +
+				", email='" + email + '\'' +
+				", phone='" + phone + '\'' +
+				", country='" + country + '\'' +
+				", city='" + city + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", roles=" + roles +
+				'}';
 	}
 }

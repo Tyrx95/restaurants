@@ -5,7 +5,7 @@
 
     <div class="col-md-9 col-sm-9 col-xs-12 pull-right-sm" style="color:white">
       <div class="restaurant-listing horizontal">
-        <h3>{{ model.restaurantName }}</h3>
+        <h3>{{ restaurant.restaurantName }}</h3>
         <p class="rating">
             {{#each active as |star|}}
               <i class="fa fa-square" aria-hidden="true"></i>
@@ -13,7 +13,7 @@
             {{#each notActive as |star|}}
 					    	<i class="fa fa-square-o" aria-hidden="true"></i>
 						{{/each}}
-          <span class="count">({{model.votes}})</span>
+          <span class="count">({{restaurant.votes}})</span>
         </p>
 
 
@@ -22,7 +22,7 @@
 				        $$$
 				    </span>
         <span class="tags">
-                    {{model.foodType }}
+                    {{restaurant.foodType }}
                     </span>
         {{#if session.isAuthenticated}}
           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#commentModal"><i class="fa fa-square" aria-hidden="true"></i> Rate this place</button>
@@ -33,7 +33,7 @@
     </div>
     <div class="col-md-3 col-sm-3 col-xs-12">
       <a href="#" id="profile-pic">
-        <img class="img-responsive" src="{{ model.imageFileName }}" />
+        <img class="img-responsive" src="{{ restaurant.imageFileName }}" />
       </a>
     </div>
   </div>
@@ -88,7 +88,7 @@
           <div class="title">
             <div class="row">
               <div class="col-md-12 main">
-                About {{ model.restaurantName }}
+                About {{ restaurant.restaurantName }}
 
               </div>
               <div class="padded">
@@ -105,7 +105,7 @@
                   Description
                 </div>
 
-                {{{ model.description}}}
+                {{{ restaurant.description}}}
 
               </div>
 
@@ -122,9 +122,14 @@
         <div class="padded">
           <div class="title">
             <div class="row">
-              <div class="col-md-12 main">
+              <div class="col-md-3 main">
                 Menu
               </div>
+              <div class="col-md-9 main">
+              <button class="btn btn-primary" {{ action 'toggleBreakfast'}}>Breakfast </button>
+              <button class="btn btn-primary" {{ action 'toggleLunch'}}>Lunch</button>
+              <button class="btn btn-primary" {{ action 'toggleDinner'}}>Dinner </button>
+            </div>
 
 
               <div class="padded">
@@ -132,44 +137,46 @@
                   <div class="row">
                     <div class="col-md-12">
                       <ul class="restaurant-menu">
-                        <li class="item">
-                          <span>Brocolli</span>
-                          <span>$5.95</span>
-                        </li>
-                        <li>
-                          <span>
-	                                          Tasty
-	                                        </span>
-                        </li>
-                        <li class="item">
-                          <span>Chevapi</span>
-                          <span>$4.95</span>
-                        </li>
-                        <li>
-                          <span>
-	                                          Minced meat
-	                                        </span>
-                        </li>
-                        <li class="item">
-                          <span>Bread</span>
-                          <span>$0.95</span>
-                        </li>
-                        <li>
-                          <span>
+                        {{#if (eq menuType 'Breakfast')}}
+                        {{#each breakfast as |meal|}}
 
-	                                        </span>
-                        </li>
                         <li class="item">
-                          <span>Yogurth</span>
-                          <span>$2.95</span>
+                          <span>{{meal.name}}</span>
+                          <span>{{meal.price}}</span>
                         </li>
                         <li>
                           <span>
-	                                          Dairy product
-	                                        </span>
+	                                          {{meal.description}}
+	                                      </span>
                         </li>
+                      {{/each}}
+                      {{else if (eq menuType 'Lunch')}}
+                      {{#each lunch as |meal|}}
 
+                      <li class="item">
+                        <span>{{meal.name}}</span>
+                        <span>{{meal.price}}</span>
+                      </li>
+                      <li>
+                        <span>
+                                          {{meal.description}}
+                                      </span>
+                      </li>
+                    {{/each}}
+                    {{else}}
+                    {{#each dinner as |meal|}}
 
+                    <li class="item">
+                      <span>{{meal.name}}</span>
+                      <span>{{meal.price}}</span>
+                    </li>
+                    <li>
+                      <span>
+                                        {{meal.description}}
+                                    </span>
+                    </li>
+                  {{/each}}
+                       {{/if}}
                       </ul>
 
                     </div>

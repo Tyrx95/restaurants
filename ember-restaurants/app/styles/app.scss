@@ -110,13 +110,13 @@ a:hover
         color: #fc6e5f;
     }
 
-#navbar-brand-centered .navbar-right .item {
+.navbar-brand-centered .navbar-right .item {
     display: block;
     opacity: 0.6;
-    color:white;
     font-style: normal;
-    }
+    color: #fc6e5f;
 
+    }
 
 .card.admin-container
 {
@@ -238,6 +238,10 @@ form.admin-restaurant-form textarea {
     padding-bottom: 40px;
     text-align: center;
     color: chocolate;
+}
+
+#add-user-button{
+    width: 50%
 }
 
 .specials-container {
@@ -568,8 +572,6 @@ ul.block-grid-4 > li:nth-of-type(4n+1) {
     opacity: 0.4;
 }
 
-
-
 #footer
 {
   background-color: #131d24;
@@ -578,6 +580,7 @@ ul.block-grid-4 > li:nth-of-type(4n+1) {
   font-size: 14px;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.5);
+  bottom: 0px;
 }
 
 #footer ul
@@ -1850,6 +1853,12 @@ form.menu-item .menu-item-price {
 }
 
 form.menu-item .menu-item-description {
+    width: 75%;
+    margin-top: 20px;
+}
+
+form.menu-item .menu-item-type {
+    width: 20%;
     margin-top: 20px;
 }
 
@@ -1929,7 +1938,7 @@ form.menu-item .menu-item-description {
 	:: Inputs & Buttons
 	-------------------------------------------------- */
 .form-control {
-    color: whitesmoke;
+    color: black;
     font-style: oblique;
     opacity: 80%;
 }
@@ -1941,8 +1950,15 @@ form.menu-item .menu-item-description {
 .btn-custom:focus {
     color: #fff;
 }
+.input-edit{
+  border: none;
+  box-shadow: none;
+  outline:none;
+}
 
 
 /*
 HEADER
 */
+
+@import "ember-power-select";

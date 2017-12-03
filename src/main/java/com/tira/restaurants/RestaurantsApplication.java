@@ -20,7 +20,7 @@ public class RestaurantsApplication {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/currentUser").allowedOrigins("http://localhost:4200");
+				/*registry.addMapping("/currentUser").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/login").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/allRestaurantsSortReservationsToday").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/getRestaurantDetails").allowedOrigins("http://localhost:4200");
@@ -32,8 +32,17 @@ public class RestaurantsApplication {
 				registry.addMapping("/register").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/getRestaurantsByFilter").allowedOrigins("http://localhost:4200");
 				registry.addMapping("/getAllCategories").allowedOrigins("http://localhost:4200");
-				
-				
+				registry.addMapping("/admin/getAdministrationCounters").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/admin/deleteRestaurant").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/admin/addRestaurant").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/admin/adminTableItems").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/admin/adminMenuItems").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/admin/getRestaurantCategories").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/admin/getAllRestaurantTables").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/getRestaurantMenu");*/
+
+				registry.addMapping("/**");
+
 			}
 		};
 	}

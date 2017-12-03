@@ -1,0 +1,50 @@
+
+{{navbar-admin
+  hasAdd=true
+  addAction=(action "addRestaurant")
+  addItem="restaurant"
+  hasSearch=true
+  searchAction=(action "search")
+  searchText= filter.searchText
+}}
+
+<div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 col-centered">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="content">
+                      	<table>
+                      		<tr>
+	                      		<th>Name</th>
+	                      		<th>Category</th>
+	                      		<th>Location</th>
+	                      		<th style="width: 10%;">Options</th>
+							</tr>
+							 {{#each model.searchResponse.restaurants as |restaurant|}}
+								<tr>
+								<td> {{restaurant.restaurantName}} </td>
+								<td> {{restaurant.foodType }}</td>
+								<td> {{#with (find-by 'id' restaurant.location model.locations) as |location|}}
+                  {{location.name}}
+                  {{/with}}
+                </td>
+								<td>
+                   <a href="#" {{ action "editRestaurant" restaurant.id}}> <i class="fa fa-pencil" aria-hidden="true"></i> </a>
+                  &nbsp; &nbsp;
+
+                  <a href="#" {{ action "deleteRestaurant" restaurant}}> <i class="fa fa-times" aria-hidden="true"></i> </a>
+                </td>
+								</tr>
+							{{/each}}
+                      	</table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       </div>
+   </div>
+   <center>
+   {{pagination-pager count=model.searchResponse.numberOfRestaurantPages current=dynamicCurrent change=(action 'pageChanged')}}
+</center>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>

@@ -1,0 +1,60 @@
+
+{{navbar-admin}}
+
+{{outlet}}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card padded">
+      <div class="content" style="margin-top: 0px;">
+        <form class="admin-restaurant-form">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <p><b>First Name</b></p>
+                {{input type="text" value=user.firstName placeholder="Enter first name" class="form-control"}}
+              </div>
+
+              <div class="form-group">
+                <p><b>Email</b></p>
+                {{input type="text" value=user.email placeholder="Enter email" class="form-control"}}
+              </div>
+
+              <div class="form-group">
+                <p><b>Country</b></p>
+                {{input type="text" value=user.country placeholder="Enter country" class="form-control"}}
+              </div>
+              <div class="form-group">
+                <p><b>Password</b></p>
+                {{input type="password" value=user.password placeholder="Enter password" class="form-control"}}
+              </div>
+
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <p><b>Last Name</b></p>
+                {{input type="text" value=user.lastName placeholder="Enter last name" class="form-control"}}
+              </div>
+              <div class="form-group">
+                <p><b>Phone Number</b></p>
+                {{input type="text" value=user.phone placeholder="Enter phone number" class="form-control"}}
+              </div>
+              <div class="form-group">
+                <p><b>City</b></p>
+                {{input type="text" value=user.city placeholder="Enter city" class="form-control"}}
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <center>
+              <button class="btn btn-primary" id="add-user-button" {{ action "addUser" }}>Add user</button><br><br><br>
+            </center>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

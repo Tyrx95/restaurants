@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
   restaurantService: Ember.inject.service(),
   filter: Filter.create({
     pageNumber: 1,
-    itemsPerPage: 3,
+    itemsPerPage: 6,
     searchText:"",
     priceRange:0,
     rating:0

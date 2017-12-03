@@ -1,11 +1,7 @@
-import DS from 'ember-data';
+import MainModel from 'ember-restaurants/models/main-model';
 
-export default DS.Model.extend({
-  id: DS.attr(),
-  email: DS.attr(),
-  phone: DS.attr(),
-  country: DS.attr(),
-  city: DS.attr(),
-  firstName: DS.attr(),
-  lastName: DS.attr()
+var _modelProperties = ['email','firstName','lastName','phone','country','city','password']
+
+export default MainModel.extend({
+  modelProps: _modelProperties
 });

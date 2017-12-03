@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
   reservationService: Ember.inject.service(),
   restaurantService: Ember.inject.service(),
   hasAvailable: false,
+  menuType: "Breakfast",
   availableTimes: [],
   hasError: false,
   error: "",
@@ -26,12 +27,13 @@ export default Ember.Controller.extend({
             hasAvailable: false,
             hasError: false,
             error: "",
-            numOfTables: 0
+            numOfTables: 0,
+            menuType:"Breakfast"
         });
-    }.observes('model'),
+    },
   actions: {
     findTable: function() {
-      var restaurantId = this.get('model.id');
+      var restaurantId = this.get('restaurant.id');
       var reservation = this.get('reservation');
       this.get('reservationService').checkReservationAvailability(restaurantId, reservation).then(function(result) {
         this.set('numOfTables', result.tablesLeft);
@@ -51,6 +53,15 @@ export default Ember.Controller.extend({
       }.bind(this));
     },
 
+    toggleBreakfast: function(){
+      this.set('menuType','Breakfast');
+    },
+    toggleLunch: function(){
+      this.set('menuType','Lunch');
+    },
+    toggleDinner: function(){
+      this.set('menuType','Dinner');
+    },
     reserveTable: function(time){
         this.set('reservationTime',time);
         this.transitionToRoute('reservation');
@@ -62,7 +73,7 @@ export default Ember.Controller.extend({
     },
 
     rate: function(){
-       var idRestaurant = this.get('model.id');
+       var idRestaurant = this.get('restaurant.id');
        var idUser = this.get('session.data.authenticated.id');
        var mark = this.get('comment.mark');
        var comment = this.get('comment.comment');

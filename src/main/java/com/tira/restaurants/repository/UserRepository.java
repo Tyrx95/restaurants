@@ -13,9 +13,9 @@ import com.tira.restaurants.domain.User;
 public interface UserRepository extends PagingAndSortingRepository<User, Long>{
 	
 	
-	@Query("SELECT u FROM User u WHERE lower(u.firstName) LIKE lower('%' || :text || '%')" +
-			" OR lower(u.lastName) LIKE lower('%' || :text || '%')")
-	public Page<User> getUsersByFilter(@Param("text") String text, Pageable pageable);
+	@Query("SELECT DISTINCT u FROM User u WHERE (lower(u.firstName) LIKE lower('%' || :text || '%'))" +
+			" OR (lower(u.lastName) LIKE lower('%' || :text || '%'))")
+    Page<User> getUsersByFilter(@Param("text") String text, Pageable pageable);
 	User findByEmail(String email);
 	
 }

@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
         self.transitionToRoute('index');
       }, (err) => {
         alert(err);
+        console.log('Entered data is not valid. Please try again.');
       });
     }
   }

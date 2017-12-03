@@ -25,6 +25,7 @@ public class TableServiceImpl implements TableService {
 
 	@Override
 	public void addTables(List<TableDTO> addTablesDTO) {
+		System.out.println(addTablesDTO);
 		for(TableDTO tableDTO : addTablesDTO) {
 			Table table = new Table(restaurantService.getOne(tableDTO.getIdRestaurant()), tableDTO.getSittingPlaces());
 			tableRepository.save(table);

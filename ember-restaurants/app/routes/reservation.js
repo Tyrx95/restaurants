@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 
       var restaurantController= this.controllerFor('restaurant');
 
-      controller.set('restaurant', restaurantController.get('model'));
+      controller.set('restaurant', restaurantController.get('restaurant'));
       controller.set('reservationTime', restaurantController.get('reservationTime'));
       controller.set('reservation', restaurantController.get('reservation'));
     }

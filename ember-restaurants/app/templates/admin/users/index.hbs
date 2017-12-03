@@ -1,0 +1,60 @@
+
+{{navbar-admin
+  hasAdd=true
+  addAction=(action "addUser")
+  addItem="user"
+  hasSearch=true
+  searchAction=(action "search")
+  searchText= filter.searchText}}
+
+{{outlet}}
+
+<div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 col-centered">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="content">
+                      	<table>
+                      		<tr>
+	                      		<th>First Name</th>
+	                      		<th>LastName</th>
+	                      		<th>Email</th>
+                            <th>Phone</th>
+                            <th>Country</th>
+                            <th>City</th>
+	                      		<th style="width: 10%;">Options</th>
+							</tr>
+							 {{#each model.searchResponse.users as |user index|}}
+								<tr>
+								<td> {{user.firstName}} </td>
+								<td> {{user.lastName}}</td>
+								<td> {{user.email}}</td>
+                <td> {{user.phone}}</td>
+                <td> {{user.country}}</td>
+                <td> {{user.city}}</td>
+								<td>
+                   <a href="#" {{ action "editUser" user.id}}> <i class="fa fa-pencil" aria-hidden="true" title="Edit"></i> </a>
+                  &nbsp; &nbsp;
+
+                  <a href="#" {{ action "deleteUser" user}}> <i class="fa fa-times" aria-hidden="true" title="Delete"></i> </a>
+                  &nbsp; &nbsp;
+
+                  {{#unless (array-contains user.roles 'ADMIN')}}
+                  <a href="#" {{ action "promoteUser" user.id index}}> <i class="fa fa-user-circle" aria-hidden="true" title="Promote user"></i> </a>
+                  {{/unless}}
+                </td>
+								</tr>
+							{{/each}}
+                      	</table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       </div>
+
+   </div>
+   <center>
+   {{pagination-pager count=model.searchResponse.numberOfPages current=dynamicCurrent change=(action 'pageChanged')}}
+</center>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>

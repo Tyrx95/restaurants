@@ -74,10 +74,7 @@ public class Restaurant {
 	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<com.tira.restaurants.domain.Reservation> reservations;
 	
-	@ManyToMany(cascade = { 
-		    CascadeType.PERSIST, 
-		    CascadeType.MERGE
-		})
+	@ManyToMany()
 	@JoinTable(name = "res_cat",
 		    joinColumns = @JoinColumn(name = "res_id"),
 		    inverseJoinColumns = @JoinColumn(name = "cat_id")

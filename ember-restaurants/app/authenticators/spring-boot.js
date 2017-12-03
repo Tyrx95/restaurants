@@ -27,6 +27,7 @@ export default BaseAuthenticator.extend({
         })
       }).done(function (data, textStatus, xhr) {
         Ember.run(function() {
+          console.log(data);
           resolve(data);
         });
       }).fail(function(xhr, textStatus, error) {

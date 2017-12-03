@@ -56,5 +56,15 @@ public class Category {
 	public void setRestaurants(Set<Restaurant> restaurants) {
 		this.restaurants = restaurants;
 	}
+	public void addRestaurant(Restaurant restaurant) {
+		restaurants.add(restaurant);
+		restaurant.getCategories().add(this);
 
+	}
+
+	public void removeRestaurant(Restaurant restaurant) {
+		restaurants.remove(restaurant);
+		restaurant.getCategories().remove(this);
+
+	}
 }

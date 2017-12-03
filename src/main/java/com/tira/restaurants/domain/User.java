@@ -23,7 +23,7 @@ public class User {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "email", unique=true)
+	@Column(name = "email")
 	private String email;
 
 	@Column(name = "phone")
@@ -169,4 +169,11 @@ public class User {
 	        this.roles = roles;
 	    }
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", phone=" + phone + ", country=" + country + ", city=" + city
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", comments="
+				+ comments + ", reservations=" + reservations + ", roles=" + roles + "]";
+	}
+	
 }

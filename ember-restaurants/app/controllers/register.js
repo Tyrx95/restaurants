@@ -10,6 +10,8 @@ export default Ember.Controller.extend({
                   'phone','country','city','password');
       this.get('userService').register(registerInfo).then(function(result) {
         alert('Registration successful, redirecting to login');
+        this.setProperties({email:"", firstName:"",lastName:"",
+                    phone:"",country:"",city:"",password:""});
         this.transitionToRoute('login');
       }.bind(this), function(data) {
           alert(data.payload);

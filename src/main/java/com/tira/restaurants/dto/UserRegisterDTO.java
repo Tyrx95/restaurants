@@ -2,15 +2,15 @@ package com.tira.restaurants.dto;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.tira.restaurants.validator.ValidEmail;
 
 public class UserRegisterDTO {
 	
 	@NotNull
 	@NotEmpty
-	@ValidEmail
+	@Email
 	private String email;
 	
 	@NotNull
