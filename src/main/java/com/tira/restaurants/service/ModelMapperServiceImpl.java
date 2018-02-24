@@ -3,6 +3,8 @@ package com.tira.restaurants.service;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
@@ -18,6 +20,7 @@ import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Meal;
 import com.tira.restaurants.domain.Reservation;
 import com.tira.restaurants.domain.Restaurant;
+import com.tira.restaurants.domain.Role;
 import com.tira.restaurants.domain.Table;
 import com.tira.restaurants.domain.User;
 import com.tira.restaurants.dto.CategoryDTO;
@@ -97,18 +100,31 @@ public class ModelMapperServiceImpl implements ModelMapperService {
 	}
 
 	public MealResponseDTO convertToMealDto(Meal meal) {
-		PropertyMap<Meal, MealResponseDTO> model = new PropertyMap<Meal, MealResponseDTO>() {
+		Converter<Meal, MealResponseDTO> converter = new AbstractConverter<Meal, MealResponseDTO>() {
+			MealResponseDTO mealDTO = new MealResponseDTO();
+
 			@Override
-			protected void configure() {
-				map().setRestaurant(source.getRestaurant().getId());
+			protected MealResponseDTO convert(Meal source) {
+				mealDTO.setId(source.getId());
+				mealDTO.setIdRestaurant(source.getRestaurant().getId());
+				mealDTO.setPrice(source.getPrice());
+				mealDTO.setDescription(source.getDescription());
+				mealDTO.setName(source.getName());
+				mealDTO.setType(source.getType());
+				return mealDTO;
 			}
 		};
+
 		TypeMap<Meal, MealResponseDTO> typeMap = modelMapper.getTypeMap(Meal.class, MealResponseDTO.class);
 		if (typeMap == null) {
-			modelMapper.addMappings(model);
+			modelMapper.createTypeMap(Meal.class, MealResponseDTO.class).setConverter(converter);
 		}
-		MealResponseDTO mealDto = modelMapper.map(meal, MealResponseDTO.class);
-		return mealDto;
+		else{
+			typeMap.setConverter(converter);
+		}
+
+		MealResponseDTO mealDTO = modelMapper.map(meal, MealResponseDTO.class);
+		return mealDTO;
 	}
 
 	public CategoryDTO convertToCategoryDto(Category category) {
@@ -122,8 +138,34 @@ public class ModelMapperServiceImpl implements ModelMapperService {
 	}
 
 	public UserResponseDTO convertToUserDto(User user) {
-		UserResponseDTO userDto = modelMapper.map(user, UserResponseDTO.class);
-		return userDto;
+		Converter<User, UserResponseDTO> converter = new AbstractConverter<User, UserResponseDTO>() {
+			UserResponseDTO userDTO = new UserResponseDTO();
+
+			@Override
+			protected UserResponseDTO convert(User source) {
+				userDTO.setCity(source.getCity());
+				userDTO.setCountry(source.getCountry());
+				userDTO.setEmail(source.getEmail());
+				userDTO.setFirstName(source.getFirstName());
+				userDTO.setId(source.getId());
+				userDTO.setLastName(source.getLastName());
+				userDTO.setPhone(source.getPhone());
+                Stream<Role> roleStream = source.getRoles().stream();
+				userDTO.setRoles(roleStream.map(s -> s.getName()).collect(Collectors.toSet()));
+                return userDTO;
+			}
+		};
+
+		TypeMap<User, UserResponseDTO> typeMap = modelMapper.getTypeMap(User.class, UserResponseDTO.class);
+		if (typeMap == null) {
+			modelMapper.createTypeMap(User.class, UserResponseDTO.class).setConverter(converter);
+		}
+		else{
+			typeMap.setConverter(converter);
+		}
+
+		UserResponseDTO userDTO = modelMapper.map(user, UserResponseDTO.class);
+		return userDTO;
 	}
 
 	public User convertToUserEntity(UserRegisterDTO userDto) {
@@ -186,15 +228,20 @@ public class ModelMapperServiceImpl implements ModelMapperService {
 			protected TableDTO convert(LinkedHashMap source) {
 				TableDTO tableDTO = new TableDTO();
 				if (source.get("id") != null) {
-					tableDTO.setId(Long.parseLong((String) source.get("id")));
+					tableDTO.setId(new Long((Integer) source.get("id")));
 				}
 
 				if (source.get("idRestaurant") != null) {
-					tableDTO.setIdRestaurant(Long.parseLong((String) source.get("idRestaurant")));
+					tableDTO.setIdRestaurant(new Long((Integer) source.get("idRestaurant")));
 				}
 
 				if (source.get("sittingPlaces") != null) {
-					tableDTO.setSittingPlaces((Integer) source.get("sittingPlaces"));
+					try {
+						tableDTO.setSittingPlaces(Integer.parseInt(((String) source.get("sittingPlaces")).split("\\s+")[0]));
+					}
+					catch(ClassCastException e){
+						tableDTO.setSittingPlaces((Integer) source.get("sittingPlaces"));
+					}
 				}
 
 				return tableDTO;
@@ -214,18 +261,35 @@ public class ModelMapperServiceImpl implements ModelMapperService {
 		Converter<LinkedHashMap, MealResponseDTO> converter = new AbstractConverter<LinkedHashMap, MealResponseDTO>() {
 			@Override
 			protected MealResponseDTO convert(LinkedHashMap source) {
+				System.out.println(source);
 				MealResponseDTO mealDTO = new MealResponseDTO();
 				if (source.get("id") != null) {
-					mealDTO.setId(Long.parseLong((String) source.get("id")));
+					try {
+						mealDTO.setId(Long.parseLong((String) source.get("id")));
+					}
+					catch(ClassCastException e){
+						mealDTO.setId(new Long((Integer) source.get("id")));
+					}
 				}
 
 				if (source.get("idRestaurant") != null) {
-					mealDTO.setRestaurant(Long.parseLong((String) source.get("idRestaurant")));
+					mealDTO.setIdRestaurant(new Long((Integer) source.get("idRestaurant")));
 				}
 				mealDTO.setName((String) source.get("name"));
 				mealDTO.setDescription((String) source.get("description"));
 				if (source.get("price") != null) {
-					mealDTO.setPrice(Double.parseDouble((String) source.get("price")));
+					if(source.get("price") instanceof String) {
+						mealDTO.setPrice(Double.parseDouble((String) source.get("price")));
+					}
+					else if(source.get("price") instanceof Integer){
+						mealDTO.setPrice(new Double((Integer) source.get("price")));
+					}
+
+					else{
+						mealDTO.setPrice((Double) source.get("price"));
+					}
+
+
 				}
 				mealDTO.setType((String) source.get("type"));
 				return mealDTO;

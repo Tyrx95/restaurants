@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="card admin-container ">
+			<div class="content">
+				<ul class="admin-nav-bar">
+          {{#nav-link-to 'admin.index'}}Dashboard{{/nav-link-to}}
+          {{#nav-link-to 'admin.restaurants'}}Restaurants{{/nav-link-to}}
+          {{#nav-link-to 'admin.locations'}}Locations{{/nav-link-to}}
+          {{#nav-link-to 'admin.users'}}Users{{/nav-link-to}}
+					{{#nav-link-to 'admin.categories'}}Categories{{/nav-link-to}}
+					<div style="float: right;margin-top: 10px;">
+							{{#if hasSearch}}
+
+							    {{input type="text" value=searchText placeholder="Search..." }}
+									<a href="#" {{ action (action searchAction) }}> <i class="fa fa-search" aria-hidden="true"></i> </a>
+		          {{/if}}
+
+
+	          {{#if hasAdd}}
+	              	    <button class="btn btn-primary" style="margin-left:10px" {{action (action addAction) }}>
+	              	    &nbsp; &nbsp; Add {{addItem}}
+	              	    </button>
+	          {{/if}}
+         </div>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

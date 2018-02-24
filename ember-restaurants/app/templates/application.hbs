@@ -1,5 +1,58 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
+<nav class="navbar navbar-default" role="navigation">
+
+  <div class="container">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-brand-centered">
+           <span class="sr-only">Toggle navigation</span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+      <div class="navbar-brand navbar-brand-centered">Restaurants Reservation</div>
+    </div>
+
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbar-brand-centered">
+      <ul class="nav navbar-nav navbar-right">
+        <li style="color: white">
+          {{#link-to 'index'}}Home{{/link-to}}
+        </li>
+        <li class="item">
+          {{#link-to 'restaurants'}}Restaurants{{/link-to}}
+        </li>
+        <li class="item">
+          {{#if session.isAuthenticated}}
+            <a href="#" {{action 'logout'}}>Logout</a>
+          {{else}}
+            {{#link-to 'login'}}Login{{/link-to}}
+          {{/if}}
+        </li>
+        <li style="color: red">
+          {{#if (array-contains currentUser.roles 'ADMIN')}}
+            {{#link-to 'admin'}}Admin{{/link-to}}
+          {{/if}}
+        </li>
+
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>
 
 {{outlet}}
+
+
+<div id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p> Copyright
+        </p>
+        <p class="text-center to-animate"><a href="#" class="js-gotop">Go To Top</a></p>
+      </div>
+    </div>
+  </div>
+</div>

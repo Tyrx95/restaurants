@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 import com.tira.restaurants.domain.Category;
+import com.tira.restaurants.domain.Restaurant;
 import com.tira.restaurants.repository.CategoryRepository;
 
 @Service
@@ -17,6 +18,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	CategoryRepository categoryRepository;
+	
+	@Autowired
+	RestaurantService restaurantService;
 	
 	@Override
 	public List<Category> getAll() {
@@ -46,7 +50,18 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		category.setName(name);
 		addCategory(category);
+		updateFoodTypeForAllRestaurants(category.getId());
 		return category;
+	}
+
+	private void updateFoodTypeForAllRestaurants(Long id) {
+		Category category = categoryRepository.findOne(id);
+		for(Restaurant restaurant : category.getRestaurants()) {
+			restaurant.updateFoodType();
+			restaurantService.addRestaurant(restaurant);
+		}
+		
+		
 	}
 
 	@Override

@@ -17,6 +17,7 @@ public interface UserService {
 	User editUser(UserEditDTO userDTO);
 	void deleteUser(Long id);
 	User getUser(Long id);
+	void promoteUser(Long id);
 	
 	
 }

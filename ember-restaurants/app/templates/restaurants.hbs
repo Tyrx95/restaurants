@@ -1,0 +1,127 @@
+<div class="col-md-12">
+  <form role="search" class="filter-box restaurants">
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">
+                       <i class="fa fa-search" aria-hidden="true"></i>
+                   </span> {{input type="text" value=filter.searchText  placeholder="Type in a restaurant or city name ..." }}
+
+      <span class="input-group-btn {{if isOpen 'open'}}">
+                       <button type="button" class="btn btn-primary dropdown-toggle" {{action 'toggleOpen'}}>
+                       Filter by
+                       {{#if isOpen}}
+                           <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                       {{else}}
+                           <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                       {{/if}}
+
+                       </button>
+                       <div class="filter dropdown-menu">
+                           <div class="col-md-6">
+                               <p class="title">
+                               Price
+                               {{#if (gt filter.priceRange 0)}}
+                                   <a href="#" {{action "clearPriceRange"}}><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;</a>
+                               {{/if}}
+                               </p>
+
+                               {{star-rating item=filter rating=filter.priceRange on-click=(action "priceRangeSelected") fullClassNames='fa fa-usd' emptyClassNames='fa fa-usd inactive' maxRating=4}}
+
+                           </div>
+
+                           <div class="col-md-6">
+                               <p class="title">
+                               Rating
+                               {{#if (gt filter.rating 0)}}
+                                   <a href="#" {{action "clearRating"}}><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;</a>
+                               {{/if}}
+                               </p>
+
+                               {{star-rating item=filter rating=filter.rating on-click=(action "ratingSelected") fullClassNames='fa fa-square' emptyClassNames='fa fa-square-o inactive '}}
+
+                           </div>
+
+                           <div class="divider"></div>
+
+                           <div class="col-md-12">
+                               <p class="title">Cuisine</p>
+                           </div>
+
+                           {{#each model.categories as |category index|}}
+                               <div class="col-md-6">
+                                   <a href="#" class="category {{if category.selected 'active' ''}}" {{ action "categorySelected" index }}>{{ category.name }}</a>
+                               </div>
+                           {{/each}}
+                       </div>
+                   </span>
+
+      <span class="input-group-btn red">
+                       <button class="btn btn-primary" {{action "search"}}>Search</button>
+                   </span>
+    </div>
+  </form>
+
+  <br><br>
+</div>
+
+
+
+<div class="container">
+  <div class="row">
+    {{#each (chunk 3 model.searchResponse.restaurants) as |restaurants_row|}}
+      <div class="row">
+        {{#each restaurants_row as |item|}}
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="restaurant-listing">
+              {{#link-to 'restaurant' item.id}}<img class="img-responsive" height="100px" src="{{item.imageFileName }}" alt="{{ item.restaurantName }}" />{{/link-to}}
+
+              <h3 align="center">{{#link-to 'restaurant' item.id}} {{item.restaurantName}} {{/link-to}} </h3>
+
+              <div class="row">
+                <div class="col-md-4">
+                  {{#if item.mark}}
+                    {{#each (range 0 item.mark) as |number|}}
+                      <i class="fa fa-square" aria-hidden="true"></i>
+                    {{/each}}
+                    {{#each (range 0 (sub 5 item.mark)) as |number|}}
+                      <i class="fa fa-square-o inactive" aria-hidden="true"></i>
+                    {{/each}}
+                  {{else}}
+                    Not rated
+                  {{/if}}
+                </div>
+                <div class="col-md-3">
+                  [{{item.votes}}]
+                </div>
+                <div class="col-md-6">
+                  {{#each (range 0 item.priceRange) as |number|}}
+                    $
+                  {{/each}}
+
+                </div>
+              </div>
+              <div class="tags">{{item.foodType}}</div>
+
+              {{#link-to 'restaurant' item.id class='btn btn-default' }}Reserve Now{{/link-to}}
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+
+<center>
+  {{pagination-pager count=model.searchResponse.numberOfRestaurantPages current=dynamicCurrent change=(action 'pageChanged') }}
+</center>
+
+<div class="container">
+  <h2>Popular locations</h2>
+  <ul class="row block-grid-4">
+    {{#each model.locations as |location|}}
+      <li class="popular-location">
+        <p class="title">{{ location.name }}</p>
+      </li>
+    {{/each}}
+  </ul>
+</div>

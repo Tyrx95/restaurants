@@ -59,9 +59,9 @@ public class RestaurantController {
 	
 	@RequestMapping(value = "/getRestaurantsByFilter", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity getRestaurantsByFilter(@RequestBody FilterDTO filter)  {
-		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
-		String searchText = filter.getSearchText();
-		Page<Restaurant> restaurantPages = restaurantService.getByFilter(searchText,pageReq);
+		System.out.println(filter);
+		
+		Page<Restaurant> restaurantPages = restaurantService.getByFilter(filter);
 		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
 		
 		for(Restaurant restaurant : restaurantPages.getContent()) {
@@ -76,20 +76,20 @@ public class RestaurantController {
 	
 	@RequestMapping(value = "/allRestaurantsSortReservationsToday", method = RequestMethod.GET,produces="application/json")
     public ResponseEntity allRestaurantsSortReservationsToday()  {
-		List<Restaurant> restaurants = reservationService.getRestaurantsSortReservationsToday();
+		Set<Restaurant> restaurants = reservationService.getRestaurantsSortReservationsToday();
 		List<RestaurantResponseDTO> restaurantsDTO = new ArrayList<>();
 		
 		for(Restaurant restaurant: restaurants) {
 			restaurantsDTO.add(modelMapperService.convertToRestaurantDto(restaurant));
 		}
-		
 		return ResponseEntity.status(HttpStatus.OK).body(restaurantsDTO);
 		
     }
 	
 	
-	@RequestMapping(value = "/getRestaurantDetails", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
+	@RequestMapping(value = "/getRestaurantDetails", method = RequestMethod.POST, produces="application/json")
     public ResponseEntity getRestaurantDetails(@RequestBody Map<String, Object> body)  {
+		
 		Restaurant restaurant = restaurantService.getOne(Long.parseLong((String) body.get("Id")));
 		if(restaurant!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(modelMapperService.convertToRestaurantDto(restaurant));
@@ -101,12 +101,13 @@ public class RestaurantController {
 	
 	@RequestMapping(value = "/getRestaurantMenu", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
     public ResponseEntity getRestaurantMenu(@RequestBody Map<String, Object> body)  {
+		System.out.println("getRestaurantMenu request BODY :" + body);
 		List<Meal> menu = mealService.getRestaurantMenu(Long.parseLong((String) body.get("idRestaurant")), (String) body.get("type"));
 		List<MealResponseDTO> menuDTO = new ArrayList<>();
 		for(Meal meal : menu) {
 			menuDTO.add(modelMapperService.convertToMealDto(meal));
 		}
-		
+		System.out.println("Printing menuDTO:"+menuDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(menuDTO);
 		
     }
@@ -114,7 +115,7 @@ public class RestaurantController {
 	@RequestMapping(value = "/insertComment", method = RequestMethod.POST, consumes="application/json" ,produces="application/json")
     public ResponseEntity insertComment(@RequestBody Map<String, Object> body)  {
 		commentService.insertComment((Integer) body.get("mark"), (Integer) body.get("idUser") , (Integer) body.get("idRestaurant") , (String) body.get("comment"));
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body("{}");
 		
     }
 	

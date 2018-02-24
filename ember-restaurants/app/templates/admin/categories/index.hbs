@@ -1,0 +1,47 @@
+
+{{navbar-admin
+  hasAdd=true
+  addAction=(action "addCategory")
+  addItem="category"
+  hasSearch=true
+  searchAction=(action "search")
+  searchText= filter.searchText}}
+
+{{outlet}}
+
+<div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 col-centered">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="content">
+                      	<table>
+                      		<tr>
+	                      		<th>Name</th>
+	                      		<th style="width: 10%;">Options</th>
+							</tr>
+							 {{#each model.searchResponse.categories as |category|}}
+								<tr>
+								<td>
+                   {{category.name}}
+                </td>
+								<td>
+                   <a href="#" {{ action "editCategory" category.id}}> <i class="fa fa-pencil" aria-hidden="true"></i> </a>
+                  &nbsp; &nbsp;
+
+                  <a href="#" {{ action "deleteCategory" category}}> <i class="fa fa-times" aria-hidden="true"></i> </a>
+                </td>
+								</tr>
+							{{/each}}
+                      	</table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       </div>
+
+   </div>
+   <center>
+   {{pagination-pager count=model.searchResponse.numberOfPages current=dynamicCurrent change=(action 'pageChanged')}}
+   </center>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>

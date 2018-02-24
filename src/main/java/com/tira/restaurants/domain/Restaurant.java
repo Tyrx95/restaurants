@@ -74,10 +74,7 @@ public class Restaurant {
 	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<com.tira.restaurants.domain.Reservation> reservations;
 	
-	@ManyToMany(cascade = { 
-		    CascadeType.PERSIST, 
-		    CascadeType.MERGE
-		})
+	@ManyToMany()
 	@JoinTable(name = "res_cat",
 		    joinColumns = @JoinColumn(name = "res_id"),
 		    inverseJoinColumns = @JoinColumn(name = "cat_id")
@@ -292,15 +289,12 @@ public class Restaurant {
 		reservation.setRestaurant(null);
 	}
 
-	private void updateFoodType() { 
-		System.out.println("Updating food categories: "+ categories);
+	public void updateFoodType() { 
 		foodType="";
 		if(categories == null || categories.isEmpty() ) {
 			foodType+="-";
 		}
 		else {
-			System.out.println("Adding categories to foodType");
-			
 			for(Category category : categories) {
 				if(foodType.equals("")) {
 					foodType+= category.getName();
@@ -310,7 +304,6 @@ public class Restaurant {
 				}
 			}
 		}
-		System.out.println("FoodType is: "+foodType);
 	}
 
 }

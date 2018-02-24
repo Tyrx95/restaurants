@@ -1,0 +1,147 @@
+<div class="jumbotron vertical-align index">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="centering text-center">
+        <h1>Make a free reservation</h1>
+
+        <p>Choose restaurants!</p>
+
+        <br>
+        <br>
+        <div class="container">
+          <form role="search" class="filter-box landing" {{action "findTable" on='submit'}}>
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+            {{input type="text" value=searchValue class="form-control" placeholder="Type in a restaurant or city name ..." }}
+            <span class="input-group-btn">
+           {{
+       ember-selectize
+       content=personChoices
+       value=persons
+       placeholder="Number of people"
+       class="filter-selectize"
+     }}
+       </span>
+
+       <span class="input-group-btn date-input">
+           {{bootstrap-datepicker autoclose=true todayHighlight=true format="M d, yyyy" startDate=minDate endDate=maxDate value=date}}
+       </span>
+
+       <span class="input-group-btn">
+           {{
+       ember-selectize
+       content=timeChoices
+       value=time
+       placeholder="Time"
+       class="filter-selectize"
+     }}
+       </span>
+              <span class="input-group-btn red">
+                <button class="btn btn-primary" type="submit">Find a table</button>
+            </span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Popular for lunch today</h2>
+    </div>
+    {{#each (chunk 3 restaurants) as |restaurants_row|}}
+      <div class="row">
+        {{#each restaurants_row as |item|}}
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="restaurant-listing">
+              {{#link-to 'restaurant' item.id}}<img class="img-responsive" height="100px" src="{{item.imageFileName }}" alt="{{ item.restaurantName }}" />{{/link-to}}
+
+              <h3 align="center">{{#link-to 'restaurant' item.id}} {{item.restaurantName}} {{/link-to}} </h3>
+
+              <div class="row">
+                <div class="col-md-4">
+                  {{#if item.mark}}
+                    {{#each (range 0 item.mark) as |number|}}
+                      <i class="fa fa-square" aria-hidden="true"></i>
+                    {{/each}}
+                    {{#each (range 0 (sub 5 item.mark)) as |number|}}
+                      <i class="fa fa-square-o inactive" aria-hidden="true"></i>
+                    {{/each}}
+                  {{else}}
+                    Not rated
+                  {{/if}}
+                </div>
+                <div class="col-md-3">
+                  [{{item.votes}}]
+                </div>
+                <div class="col-md-6">
+                  {{#each (range 0 item.priceRange) as |number|}}
+                    $
+                  {{/each}}
+                </div>
+              </div>
+              <div class="tags">{{item.foodType}}</div>
+
+              {{#link-to 'restaurant' item.id class='btn btn-default' }}Reserve Now{{/link-to}}
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<div id="about">
+  <div class="container specials">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2>Specials</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-sm-6 specials-container">
+        <img class="img-responsive" src="/assets/images/specials_1.jpg" alt="">
+        <div class="portfolio-caption">
+          <h5>Best Pizza of 2016</h5>
+          <p>New York | 43 Restaurants</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 specials-container">
+        <img class="img-responsive" src="/assets/images/specials_2.jpg" alt="">
+        <div class="portfolio-caption">
+          <h5>Best Pizza of 2016</h5>
+          <p>New York | 43 Restaurants</p>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6 specials-container">
+        <img class="img-responsive" src="/assets/images/specials_3.jpg" alt="">
+        <div class="portfolio-caption">
+          <h5>Best Pizza of 2016</h5>
+          <p>New York | 43 Restaurants</p>
+        </div>
+      </div>
+
+    </div>
+    {{#link-to 'restaurants'}}
+      <p class="specials-link">See all specials</p>
+    {{/link-to}}
+  </div>
+
+</div>
+
+<div class="container">
+  <h2>Popular locations</h2>
+  <ul class="row block-grid-4">
+    {{#each locations as |location|}}
+      <li class="popular-location">
+        <p class="title">{{ location.name }}</p>
+      </li>
+    {{/each}}
+  </ul>
+</div>

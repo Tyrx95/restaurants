@@ -6,12 +6,14 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tira.restaurants.domain.Category;
 import com.tira.restaurants.domain.Location;
 import com.tira.restaurants.domain.Restaurant;
+import com.tira.restaurants.dto.FilterDTO;
 import com.tira.restaurants.dto.RestaurantEditDTO;
 import com.tira.restaurants.repository.RestaurantRepository;
 
@@ -28,13 +30,22 @@ public class RestaurantServiceImpl implements RestaurantService {
 	CategoryService categoryService;
 	
 	@Override
-	public Page<Restaurant> getByFilter(String searchText, Pageable pageable) {
-		
-		if(searchText!=null) {
-			return repository.getRestaurantsByFilter(searchText,pageable);
+	public Page<Restaurant> getByFilter(FilterDTO filter) {
+		PageRequest pageReq = new PageRequest(filter.getPageNumber()-1, filter.getItemsPerPage());
+		String searchText = filter.getSearchText();
+		Integer rating = filter.getRating();
+		Integer priceRange = filter.getPriceRange();
+		List<String> categories = filter.getCategories();
+		String foodType="";
+		if(categories!=null && !categories.isEmpty()) {
+			foodType+=categories.remove(0);
+			for(String category: categories) {
+				foodType+=category;
+				foodType+=" | ";
+			}
 		}
-		else return repository.findAll(pageable);
 		
+		return repository.getRestaurantsByFilter(searchText,foodType,priceRange, rating, pageReq);
 	}
 
 	@Override
@@ -84,21 +95,44 @@ public class RestaurantServiceImpl implements RestaurantService {
 	
 
 	private void editRestaurantValues(Restaurant restaurant, RestaurantEditDTO editRestaurantDTO) {
-		Location location = locationService.getLocation(editRestaurantDTO.getLocation());
-		restaurant.setLocation(location);
-		Set<Category> categories = categoryService.getCategories(editRestaurantDTO.getCategories());
-		restaurant.setCategories(categories);
-		restaurant.setLongitude(editRestaurantDTO.getLongitude());
-		restaurant.setLatitude(editRestaurantDTO.getLatitude());
-		restaurant.setRestaurantName(editRestaurantDTO.getRestaurantName());
-		restaurant.setPriceRange(editRestaurantDTO.getPriceRange());
-		restaurant.setDescription(editRestaurantDTO.getDescription());
-		restaurant.setImageFileName(editRestaurantDTO.getImageFileName());
-		restaurant.setCoverFileName(editRestaurantDTO.getCoverFileName());
-		restaurant.setMark(editRestaurantDTO.getMark());
-		restaurant.setVotes(editRestaurantDTO.getVotes());
-		restaurant.setFoodType(editRestaurantDTO.getFoodType());
+		if (editRestaurantDTO.getLocation() != null) {
+			Location location = locationService.getLocation(editRestaurantDTO.getLocation());
+			restaurant.setLocation(location);
+		}
+		if (editRestaurantDTO.getCategories() != null) {
+			Set<Category> categories = categoryService.getCategories(editRestaurantDTO.getCategories());
+			restaurant.setCategories(categories);
+		}
+		if (editRestaurantDTO.getLongitude() != null) {
+			restaurant.setLongitude(editRestaurantDTO.getLongitude());
+		}
+		if (editRestaurantDTO.getLatitude() != null) {
+			restaurant.setLatitude(editRestaurantDTO.getLatitude());
+		}
+		if (editRestaurantDTO.getRestaurantName() != null) {
+			restaurant.setRestaurantName(editRestaurantDTO.getRestaurantName());
+		}
+		if (editRestaurantDTO.getPriceRange() != null) {
+			restaurant.setPriceRange(editRestaurantDTO.getPriceRange());
+		}
+		if (editRestaurantDTO.getDescription() != null) {
+			restaurant.setDescription(editRestaurantDTO.getDescription());
+		}
+		if(editRestaurantDTO.getImageFileName() != null) {
+			restaurant.setImageFileName(editRestaurantDTO.getImageFileName());
+		}
+		if (editRestaurantDTO.getCoverFileName() != null) {
+			restaurant.setCoverFileName(editRestaurantDTO.getCoverFileName());
+		}
+		if (editRestaurantDTO.getMark() != null) {
+			restaurant.setMark(editRestaurantDTO.getMark());
+		}
+		if (editRestaurantDTO.getVotes() != null) {
+			restaurant.setVotes(editRestaurantDTO.getVotes());
+		}
+		if (editRestaurantDTO.getFoodType() != null) {
+			restaurant.setFoodType(editRestaurantDTO.getFoodType());
+		}
 	}
-
 	
 }

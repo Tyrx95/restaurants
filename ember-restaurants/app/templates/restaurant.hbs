@@ -1,0 +1,199 @@
+<div class="jumbotron index restaurant" style="background-image: url('/assets/images/cover.jpeg');">
+</div>
+<div class="container" id="restaurant-container">
+  <div class="row">
+
+    <div class="col-md-9 col-sm-9 col-xs-12 pull-right-sm" style="color:white">
+      <div class="restaurant-listing horizontal">
+        <h3>{{ restaurant.restaurantName }}</h3>
+        <p class="rating">
+            {{#each active as |star|}}
+              <i class="fa fa-square" aria-hidden="true"></i>
+            {{/each}}
+            {{#each notActive as |star|}}
+					    	<i class="fa fa-square-o" aria-hidden="true"></i>
+						{{/each}}
+          <span class="count">({{restaurant.votes}})</span>
+        </p>
+
+
+
+        <span class="dollars">
+				        $$$
+				    </span>
+        <span class="tags">
+                    {{restaurant.foodType }}
+                    </span>
+        {{#if session.isAuthenticated}}
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#commentModal"><i class="fa fa-square" aria-hidden="true"></i> Rate this place</button>
+        {{else}}
+          <button type="button" class="btn btn-default" disabled="true"><i class="fa fa-square" aria-hidden="true"></i>Login to rate</button>
+        {{/if}}
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-3 col-xs-12">
+      <a href="#" id="profile-pic">
+        <img class="img-responsive" src="{{ restaurant.imageFileName }}" />
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 col-sm-3 col-xs-12">
+      <ul class="sidebar">
+        <li>Reservation</li>
+        <li>About</li>
+        <li>Menu</li>
+        <li>Photos</li>
+        <li>Reviews</li>
+      </ul>
+    </div>
+
+    <div class="col-md-9 col-sm-9 col-xs-12" id="pull-up-column">
+
+      <div class="card" id="section-reservation">
+        <div class="padded">
+          <div class="title">
+            <div class="row">
+              <div class="col-md-9 col-sm-9 col-xs-6 main v-align-center">
+                Make a free reservation
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-6 sub v-align-center">
+                <span style="height: 10px;">Booked 5 times today</span>
+              </div>
+              <div class="col-md-12">
+
+                {{find-table actionHandler=(action "findTable") reservation = reservation}}
+
+                {{#if hasAvailable}}
+                  Available Tables: {{numOfTables}}
+
+                  <br> Available Times:<br>
+                  {{#each availableTimes as |time|}}
+                    <a class="btn btn-primary" {{action "reserveTable" time }}>{{time}}</a>
+
+                  {{/each}}
+                {{/if}}
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card" id="section-about">
+        <div class="padded">
+          <div class="title">
+            <div class="row">
+              <div class="col-md-12 main">
+                About {{ restaurant.restaurantName }}
+
+              </div>
+              <div class="padded">
+
+
+              </div>
+            </div>
+            <div id="map">
+              <img class="img-responsive" src="/assets/images/map.png" />
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="subtitle">
+                  Description
+                </div>
+
+                {{{ restaurant.description}}}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <div class="card" id="section-menu">
+        <div class="padded">
+          <div class="title">
+            <div class="row">
+              <div class="col-md-3 main">
+                Menu
+              </div>
+              <div class="col-md-9 main">
+              <button class="btn btn-primary" {{ action 'toggleBreakfast'}}>Breakfast </button>
+              <button class="btn btn-primary" {{ action 'toggleLunch'}}>Lunch</button>
+              <button class="btn btn-primary" {{ action 'toggleDinner'}}>Dinner </button>
+            </div>
+
+
+              <div class="padded">
+                <div class="content">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <ul class="restaurant-menu">
+                        {{#if (eq menuType 'Breakfast')}}
+                        {{#each breakfast as |meal|}}
+
+                        <li class="item">
+                          <span>{{meal.name}}</span>
+                          <span>{{meal.price}}</span>
+                        </li>
+                        <li>
+                          <span>
+	                                          {{meal.description}}
+	                                      </span>
+                        </li>
+                      {{/each}}
+                      {{else if (eq menuType 'Lunch')}}
+                      {{#each lunch as |meal|}}
+
+                      <li class="item">
+                        <span>{{meal.name}}</span>
+                        <span>{{meal.price}}</span>
+                      </li>
+                      <li>
+                        <span>
+                                          {{meal.description}}
+                                      </span>
+                      </li>
+                    {{/each}}
+                    {{else}}
+                    {{#each dinner as |meal|}}
+
+                    <li class="item">
+                      <span>{{meal.name}}</span>
+                      <span>{{meal.price}}</span>
+                    </li>
+                    <li>
+                      <span>
+                                        {{meal.description}}
+                                    </span>
+                    </li>
+                  {{/each}}
+                       {{/if}}
+                      </ul>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+{{modal-rate theComment=comment actionRateClicked=(action "rateClicked") actionRate=(action "rate")}}

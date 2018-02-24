@@ -1,0 +1,78 @@
+<div class="card padded">
+      <div class="content" style="margin-top: 0px;">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Menu Items</h3>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-primary" style="float: right;" {{action "addMenuItem"}}><i class="fa fa-plus"></i> &nbsp;Add menu item</button>
+              </div>
+        </div>
+        {{log 'controller' controller}}
+        {{#each controller.menuItems as |item index|}}
+        <div class="row">
+          <div class="col-md-8">
+            <form class="menu-item">
+              <div class="small-right">
+                <p>
+                  <br>
+                  <a href="#"{{action "deleteMenuItem" item}}><i class="fa fa-trash" aria-hidden="true"></i></a><br><br>
+                </p>
+              </div>
+              {{add index 1}}
+              <div class="form-group right">
+
+                {{input class="form-control menu-item-name" placeholder="Name" value=item.name }}
+
+                {{input class="form-control menu-item-price" placeholder="$ Price" value=item.price}}
+
+                {{input class="form-control menu-item-description" placeholder="Description" value=item.description}}
+                <br>
+                {{ember-selectize
+                  content=menuTypeOptions
+                  selection=item.type
+                  placeholder="Select meal type" }}
+
+
+              </div>
+            </form>
+        </div>
+      </div>
+  {{/each}}
+
+
+  {{#if isEdit}}
+  {{#each controller.addQueue as |item index|}}
+  <div class="row">
+    <div class="col-md-8">
+      <form class="menu-item">
+        <div class="small-right">
+          <p>
+            <br>
+            <a href="#"{{action "deleteFromAddQueue" item}}><i class="fa fa-trash" aria-hidden="true"></i></a><br><br>
+          </p>
+        </div>
+        {{add index 1}}
+        <div class="form-group right">
+
+          {{input class="form-control menu-item-name" placeholder="Name" value=item.name }}
+
+          {{input class="form-control menu-item-price" placeholder="$ Price" value=item.price}}
+
+          {{input class="form-control menu-item-description" placeholder="Description" value=item.description}}
+          <br>
+          {{ember-selectize
+            content=menuTypeOptions
+            selection=item.type
+            placeholder="Select meal type" }}
+
+
+        </div>
+      </form>
+  </div>
+</div>
+{{/each}}
+
+{{/if}}
+      </div>
+    </div>

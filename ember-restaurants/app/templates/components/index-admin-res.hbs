@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card padded">
+      <div class="content" style="margin-top: 0px;">
+        <form class="admin-restaurant-form">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <p><b>Logo</b></p>
+                {{input type="text" value=controller.restaurant.imageFileName placeholder="Add Logo URL here" class="form-control"}}
+              </div>
+
+              <div class="form-group">
+                <p><b>Name</b></p>
+                {{input type="text" value=controller.restaurant.restaurantName placeholder="Restaurant name " class="form-control"}}
+              </div>
+
+              <div class="form-group">
+                <p><b>Description</b></p>
+                {{textarea value=controller.restaurant.description placeholder="Description" class="form-control" rows=5}}
+              </div>
+
+
+            </div>
+            <div class="col-md-6">
+              <p><b>Cover Photo</b></p>
+              <div class="form-group">
+                {{input type="text" value=controller.restaurant.coverFileName placeholder="Add Cover Photo URL here" class="form-control"}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <p><b>Category</b></p>
+              <div class="form-group admin-restaurant-category-dropdown">
+                {{ember-selectize
+                  content=model.categories
+                  optionValuePath="content.id"
+                  optionLabelPath="content.name"
+                  selection=controller.restaurant.categories
+                  multiple=true
+                  placeholder="Choose categories"
+                  remove-item=(action 'removeItem')}}
+              </div>
+
+              <p><b>Price Range</b></p>
+              <div class="form-group pricing-group">
+
+                {{star-rating item=controller.restaurant rating=controller.restaurant.priceRange on-click=(action "onPriceRangeClick") fullClassNames='fa fa-usd' emptyClassNames='fa fa-usd inactive' maxRating=4}}
+              </div>
+
+            </div>
+
+            <div class="col-md-3">
+              <p><b>Location</b></p>
+              <div class="form-group admin-restaurant-location-dropdown">
+                {{log 'location' controller.restaurant.location}}
+                {{ember-selectize
+                  content=model.locations
+                  optionValuePath="content.id"
+                  optionLabelPath="content.name"
+                  selection=controller.restaurant.location
+                  placeholder="Choose location"
+
+                }}
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

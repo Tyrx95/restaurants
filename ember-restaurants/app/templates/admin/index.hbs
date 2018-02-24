@@ -1,0 +1,45 @@
+{{navbar-admin}}
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="card padded dashboard" >
+		      <div class="content">
+				<p>
+				<br><br>
+				<b> {{ model.counters.restaurantsNumber }} </b><br>Restaurants
+				<br><br>
+				</p>
+
+		      </div>
+			  {{#link-to "admin.restaurants" class="btn btn-primary"}} Add restaurant {{/link-to}}
+		  </div>
+	</div>
+	<div class="col-md-4">
+		<div class="card padded dashboard" >
+		      <div class="content">
+				<p>
+					<br><br>
+					<b> {{ model.counters.locationsNumber }} </b><br>Locations
+					<br><br>
+				</p>
+
+		      </div>
+			  {{#link-to "admin.locations" class="btn btn-primary"}} Add location {{/link-to}}
+		  </div>
+	</div>
+	<div class="col-md-4">
+		<div class="card padded dashboard" >
+		      <div class="content">
+				<p>
+					<br><br>
+					<b> {{ model.counters.usersNumber }} </b><br>Users
+					<br><br>
+				</p>
+
+		      </div>
+			  {{#link-to "admin.users" class="btn btn-primary"}} Add user {{/link-to}}
+		  </div>
+	</div>
+</div>
+
+<br><br><br><br><br><br><br><br><br>

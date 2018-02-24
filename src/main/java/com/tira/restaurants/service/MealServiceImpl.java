@@ -29,7 +29,7 @@ public class MealServiceImpl implements MealService {
 	@Override
 	public void addMeals(List<MealResponseDTO> addMealsDTO) {
 		for(MealResponseDTO mealDTO : addMealsDTO) {
-			Meal meal = new Meal(restaurantService.getOne(mealDTO.getRestaurant()), mealDTO.getType(), mealDTO.getName(),
+			Meal meal = new Meal(restaurantService.getOne(mealDTO.getIdRestaurant()), mealDTO.getType(), mealDTO.getName(),
 					mealDTO.getPrice(), mealDTO.getDescription());
 			repository.save(meal);
 		}

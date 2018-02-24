@@ -45,21 +45,27 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public void saveAdmin(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName("USER");
         if(userRole==null) {
         	roleRepository.save(new Role("USER"));
+            userRole = roleRepository.findByName("USER");
         }
         Role adminRole = roleRepository.findByName("ADMIN");
         if(adminRole==null) {
         	roleRepository.save(new Role("ADMIN"));
+        	adminRole = roleRepository.findByName("ADMIN");
         }
         roles.add(userRole);
         roles.add(adminRole);
         user.setRoles(roles);
         userRepository.save(user);
     }
+
+    @Override
+	public void promoteUser(Long id){
+    	saveAdmin(getUser(id));
+	}
 
     @Override
     public User findByEmail(String email) {
@@ -79,9 +85,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Page<User> getByFilter(String searchText, Pageable pageable) {
 		if(searchText!=null) {
-			return userRepository.getUsersByFilter(searchText,pageable);
+			Page<User> page = userRepository.getUsersByFilter(searchText,pageable);
+			return page;
 		}
-		else return userRepository.findAll(pageable);
+
+		else {
+			System.out.println("Search is null");
+			Page<User> page = userRepository.findAll(pageable);
+			return page;
+		}
 	}
 
 	@Override
@@ -113,7 +125,6 @@ public class UserServiceImpl implements UserService {
 		user.setCity(userDTO.getCity());
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
-		user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
 	}
 
 	
